@@ -17,4 +17,5 @@ jobs:
                   working-directory: week1
             - name: linter
               run: npm run lint
+              working-directory: week1
     
