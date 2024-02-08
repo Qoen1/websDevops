@@ -15,4 +15,6 @@ jobs:
             - uses: ArtiomTr/jest-coverage-report-action@v2
               with:
                   working-directory: week1
+            - name: linter
+              run: npm run lint
     
