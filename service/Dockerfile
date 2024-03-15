@@ -19,11 +19,13 @@ WORKDIR /usr/src/app
 # Run the application as a non-root user.
 USER node
 
+COPY . .
+
 # Expose the port that the application listens on.
 EXPOSE 3000
 
 # Run the application.
 
-CMD npm install
+RUN npm install
 
 CMD npm start
