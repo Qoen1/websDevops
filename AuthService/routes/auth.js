@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const AuthService = require('../services/authService');
+//KeyCloak is an alternative
 
 const authService = new AuthService();
 

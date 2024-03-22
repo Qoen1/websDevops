@@ -5,7 +5,8 @@ const User = require('../../models/User');
 class AuthService {
     async register(username, password, role = 'user') {
         try {
-            const hashedPassword = await bcrypt.hash(password, 10);
+            const saltRounds = 10;
+            const hashedPassword = await bcrypt.hash(password, saltRounds);
             const newUser = new User({ username, password: hashedPassword, role });
             await newUser.save();
             return { message: 'User registered successfully' };
