@@ -8,7 +8,8 @@ var jsonParser = bodyParser.json()
 //routes
 
 // app.use('/rooms/:id/lines', jsonParser, require('./routes/Lines'));
-
+const MessageService = require('./services/MessageService')
+const messageService = new MessageService()
 //end routes
 
 //error handler
