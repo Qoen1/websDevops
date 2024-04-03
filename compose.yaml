@@ -1,21 +1,21 @@
 services:
-  AuthService:
+  authservice:
     build:
-      context: ./authService
+      context: ./AuthService
     ports:
       - 1000:3000
     depends_on:
       - mongo-express
-  CompetitionService:
+  competitionservice:
     build:
-      context: ./competitionService
+      context: ./CompetitionService
     ports:
       - 2000:3000
     depends_on:
       - mongo-express
-  FotoAnalyseService:
+  fotoanalyseservice:
     build:
-      context: ./fotoAnalyseService
+      context: ./FotoAnalyseService
     ports:
       - 3000:3000
     depends_on:
@@ -27,16 +27,16 @@ services:
       - 4000:3000
     depends_on:
       - mongo-express
-  SubmissionImageService:
+  submissionimageservice:
     build:
-      context: ./submissionImageService
+      context: ./SubmissionImageService
     ports:
       - 5000:3000
     depends_on:
         - mongo-express
-  TargetImageService:
+  targetimageservice:
     build:
-      context: ./targetImageService
+      context: ./TargetImageService
     ports:
       - 6000:3000
     depends_on:
