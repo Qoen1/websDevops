@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../../models/User');
+const User = require('../models/user');
 
 class AuthService {
     async register(username, password, role = 'user') {
@@ -26,6 +26,7 @@ class AuthService {
                 throw new Error('Invalid username or password');
             }
             const token = jwt.sign({ userId: user._id }, 'secret', { expiresIn: '2h' });
+            //save token in db, connect with user
             return { token };
         } catch (error) {
             throw new Error(error.message);
