@@ -1,20 +1,21 @@
 const express = require('express');
-var bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const imageRoutes = require('./routes/imageRoutes');
 const app = express();
+const PORT = process.env.PORT || 3002;
 // mongoose.connect('mongodb://localhost:27017/expressJSTest',{ useNewUrlParser: true });
 
-var jsonParser = bodyParser.json()
+
+//middleware
+app.use(bodyParser.json());
 
 //routes
+app.use('/', imageRoutes);
 
-// app.use('/rooms/:id/lines', jsonParser, require('./routes/Lines'));
+
 
 //end routes
 
-//error handler
-app.get('/', function(req, res){
-  res.send('feckin\' works!');
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
-
-
-app.listen(3000);
