@@ -14,6 +14,16 @@ router.post('/image/tags', async (req, res) => {
   }
 });
 
+router.post('/image/compare', async (req, res) => {
+  const imageAnalyseService = new ImageAnalyseService();
+  try {
+    const {image1Base64, image2Base64} = req.body;
+    const result = await imageAnalyseService.compareImages(image1Base64, image2Base64);
+    res.json(result);
+  } catch(error) {
+    console.log(error);
+  }
+})
   
-  module.exports = router;
+module.exports = router;
 

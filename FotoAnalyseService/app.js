@@ -8,6 +8,7 @@ const PORT = process.env.PORT || 3002;
 
 //middleware
 app.use(bodyParser.json());
+app.use(express.json());
 
 //routes
 app.use('/', imageRoutes);
