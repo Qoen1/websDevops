@@ -1,9 +1,11 @@
-const TargetImage = require('../model/TargetImage')
-const Competition = require('../model/Competition')
-const messageService = require('./MessageService')
+const TargetImage = require('../models/TargetImage')
+// const Competition = require('../models/Competition')
+const MessageService = require('./MessageService')
 
 
-class TargetImageController {
+class TargetImageService {
+  messageService = new MessageService()
+
   SaveImage(file, fileType, userId, CompetitionId){
     return new Promise((resolve, reject) => {
       // let yesterday = new Date()
@@ -20,8 +22,9 @@ class TargetImageController {
           CompetitionId: CompetitionId
         })
         newFile.save().then(data => {
+          console.log(this.messageService)
+          this.messageService.NotifyTargetImageCreated(data._id, CompetitionId)
           resolve(data._id)
-          messageService.NotifyTargetImageCreated(data._id)
         })
       // })
     })
@@ -36,4 +39,4 @@ class TargetImageController {
   }
 }
 
-module.exports = TargetImageController
+module.exports = TargetImageService

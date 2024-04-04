@@ -8,14 +8,17 @@ const routingKeys = require('../../routingKeys')
 let connection
 let channel
 
-class messageService{
-  constructor () {
+class MessageService{
+  competitionService
+  constructor(competitionService) {
+    this.competitionService = competitionService
+
     amqp.connect(uri, { resubscribe: true }).then(x => {
       connection = x
       connection.createChannel().then(y => {
         channel = y
         channel.assertExchange(exchange, exchangeType, {durable: false})
-        channel.assertQueue(queue, {exclusive: true})
+        channel.assertQueue(queue)
         this.SubscribeToTargetImageCreated()
       })
     })
@@ -23,12 +26,13 @@ class messageService{
 
   SubscribeToTargetImageCreated(){
     channel.bindQueue(queue, exchange, routingKeys.targetImageAddKey).then(x => {
-      channel.consume(queue, message => this.HandleTargetImageCreated(message))
+      channel.consume(queue, message => this.HandleTargetImageCreated(JSON.parse(message.content)))
     })
   }
 
   HandleTargetImageCreated(message){
-    resolve(JSON.parse(message.content))
+    console.log("target image created!")
+    this.competitionService.RegisterTargetImage(message.imageId, message.competitionId)
   }
 
   NotifyCompetitionCreated(competition){
@@ -39,4 +43,4 @@ class messageService{
   }
 }
 
-module.exports = messageService
+module.exports = MessageService
