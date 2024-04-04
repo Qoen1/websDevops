@@ -3,9 +3,8 @@ const router = express.Router();
 const AuthService = require('../services/authService');
 //KeyCloak is an alternative
 
-const authService = new AuthService();
-
 router.post('/register', async (req, res) => {
+    const authService = new AuthService();
     const { username, password, role } = req.body;
     try {
         const result = await authService.register(username, password, role);
@@ -16,6 +15,7 @@ router.post('/register', async (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
+    const authService = new AuthService();
     const { username, password } = req.body;
     try {
         const result = await authService.login(username, password);
