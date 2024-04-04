@@ -1,7 +1,11 @@
 const Competition = require('../models/Competition')
 const MessageService = require('./MessageService')
-const messageService = new MessageService()
 class CompetitionService{
+  messageService
+
+  constructor (messageService) {
+    this.messageService = messageService
+  }
   SaveCompetition(userId, title){
     return new Promise((resolve, reject) => {
       let today = Date()
@@ -11,8 +15,16 @@ class CompetitionService{
         title: title
       })
       newCompetition.save().then(data => {
-        messageService.NotifyCompetitionCreated(data)
+        this.messageService.NotifyCompetitionCreated(data)
         resolve(data)
+      })
+    })
+  }
+
+  GetCompetition(id){
+    return new Promise((resolve, reject) => {
+      Competition.findOne({_id: id}).then(x => {
+        resolve(x)
       })
     })
   }

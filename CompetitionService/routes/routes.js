@@ -3,17 +3,15 @@ const router = new express.Router()
 const MessageService = require('../services/MessageService')
 const CompetitionService = require('../services/CompetitionService')
 
-const competitionService = new CompetitionService()
-const messageService = new MessageService(competitionService)
+const messageService = new MessageService()
+const competitionService = messageService.competitionService
 
+router.get('/:id', (request, result, next)=>{
 
-// router.get('/:id', (request, result, next)=>{
-//
-//   targetImageController.GetImage(request.params.id).then(image => {
-//     result.contentType(image.imageType)
-//     result.send(image.imageBuffer)
-//   })
-// })
+  competitionService.GetCompetition(request.params.id).then(competition => {
+    result.send(competition)
+  })
+})
 
 router.post('/', (request, result, next)=>{
   const userId = request.body.userId

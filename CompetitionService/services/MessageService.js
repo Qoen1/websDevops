@@ -4,6 +4,7 @@ const exchange = 'my_exchange'
 const exchangeType = 'topic'
 const queue = 'CompetitionServiceQueue'
 const routingKeys = require('../../routingKeys')
+const CompetitionService = require('../services/CompetitionService')
 
 let connection
 let channel
@@ -11,7 +12,7 @@ let channel
 class MessageService{
   competitionService
   constructor(competitionService) {
-    this.competitionService = competitionService
+    this.competitionService = new CompetitionService(this)
 
     amqp.connect(uri, { resubscribe: true }).then(x => {
       connection = x
@@ -26,7 +27,9 @@ class MessageService{
 
   SubscribeToTargetImageCreated(){
     channel.bindQueue(queue, exchange, routingKeys.targetImageAddKey).then(x => {
-      channel.consume(queue, message => this.HandleTargetImageCreated(JSON.parse(message.content)))
+      channel.consume(queue, message => {
+        this.HandleTargetImageCreated(JSON.parse(message.content))
+      })
     })
   }
 
