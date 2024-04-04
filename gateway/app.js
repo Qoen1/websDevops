@@ -1,7 +1,7 @@
 const express = require('express');
 var bodyParser = require('body-parser')
 const app = express();
-mongoose.connect('mongodb://localhost:27017/expressJSTest',{ useNewUrlParser: true });
+//mongoose.connect('mongodb://localhost:27017/expressJSTest',{ useNewUrlParser: true });
 
 var jsonParser = bodyParser.json()
 
