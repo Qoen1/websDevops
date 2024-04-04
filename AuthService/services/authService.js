@@ -25,8 +25,7 @@ class AuthService {
             if (!validPassword) {
                 throw new Error('Invalid username or password');
             }
-            const token = jwt.sign({ userId: user._id }, 'secret', { expiresIn: '2h' });
-            //save token in db, connect with user
+            const token = jwt.sign({ userId: user._id }, 'secret', { expiresIn: '168h' });
             return { token };
         } catch (error) {
             throw new Error(error.message);

@@ -1,32 +1,30 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const AuthService = require('./services/AuthService');
+const AuthService = require('./services/authService');
 const bodyParser = require('body-parser');
+const authRoutes = require('./routes/auth');
+
 
 const app = express();
-mongoose.connect('mongodb://localhost:27017/authServiceTest');
+mongoose.connect('mongodb://localhost:27017/Auth');
 
 var jsonParser = bodyParser.json()
-
-async function test() {
-  const auth = new AuthService();
-  await auth.register('test', 'pwd');
-  const token = await auth.login('test', 'pwd');
-  console.log(token);
-}
-
-test()
+app.use(jsonParser)
 
 //routes
 
-// app.use('/rooms/:id/lines', jsonParser, require('./routes/Lines'));
+app.use('/auth', authRoutes);
 
 //end routes
 
 //error handler
-app.get('/', function(req, res){
-  res.send('feckin\' works!');
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
 });
 
-
-app.listen(3000);
+// Start the server
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
