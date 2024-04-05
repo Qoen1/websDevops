@@ -2,6 +2,10 @@ services:
   authservice:
     build:
       context: ./AuthService
+    container_name: authservice
+    hostname: "authservice"
+    labels:
+      NAME: "authservice"
     ports:
       - 1000:3000
     depends_on:
@@ -10,6 +14,10 @@ services:
   competitionservice:
     build:
       context: ./CompetitionService
+    container_name: competitionservice
+    hostname: "competitionservice"
+    labels:
+      NAME: "competitionservice"
     ports:
       - 2000:3000
     depends_on:
@@ -18,6 +26,10 @@ services:
   fotoanalyseservice:
     build:
       context: ./FotoAnalyseService
+    container_name: fotoanalyseservice
+    hostname: "fotoanalyseservice"
+    labels:
+      NAME: "fotoanalyseservice"
     ports:
       - 3000:3000
     depends_on:
@@ -26,11 +38,19 @@ services:
   gateway:
     build:
       context: ./gateway
+    container_name: gateway
+    hostname: "gateway"
+    labels:
+      NAME: "gateway"
     ports:
       - 4000:3000
   submissionimageservice:
     build:
       context: ./SubmissionImageService
+    container_name: submissionimageservice
+    hostname: "submissionimageservice"
+    labels:
+      NAME: "submissionimageservice"
     ports:
       - 5000:3000
     depends_on:
@@ -64,9 +84,7 @@ services:
     labels:
       NAME: "rabbitmq"
     ports:
-      - 5671:5671
       - 5672:5672
-      - 5673:5673
   prometheus:
     image: prom/prometheus:latest
     volumes:
