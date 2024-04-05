@@ -39,21 +39,34 @@ services:
   targetimageservice:
     build:
       context: ./TargetImageService
+    container_name: targetimageservice
+    hostname: "targetimageservice"
+    labels:
+      NAME: "targetimageservice"
     ports:
-      - 6000:3000
+      - 6000:6000
     depends_on:
       - mongo-express
       - rabbitmq
   mongo-express:
     image: mongo
+    container_name: mongo
+    hostname: "mongo"
+    labels:
+      NAME: "mongo"
     restart: always
     ports:
       - 6942:27017
   rabbitmq:
-    image: rabbitmq:3-management
+    image: rabbitmq:latest
+    container_name: rabbitmq
+    hostname: "rabbitmq"
+    labels:
+      NAME: "rabbitmq"
     ports:
+      - 5671:5671
       - 5672:5672
-      - 15672:15672
+      - 5673:5673
   prometheus:
     image: prom/prometheus:latest
     volumes:
@@ -61,3 +74,8 @@ services:
     ports:
       - 9090:9090
     command: --web.enable-lifecycle --config.file=/etc/prometheus/prometheus.yml
+  grafana:
+    build: ./grafana
+    ports:
+      - 1234:3000
+

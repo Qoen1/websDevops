@@ -11,7 +11,7 @@ const metrics_middleware = promBundle({
   }
 })
 
-mongoose.connect('mongodb://localhost:27017/TargetImage')
+mongoose.connect('mongodb://mongo/TargetImage')
 
 //middleware
 app.use(metrics_middleware)

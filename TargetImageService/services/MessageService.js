@@ -1,5 +1,5 @@
 const amqp = require('amqplib')
-const uri = 'amqp://localhost:5672'
+const uri = 'amqp://rabbitmq'
 const exchange = 'my_exchange'
 const exchangeType = 'topic'
 const queue = 'targetImageQueue'
