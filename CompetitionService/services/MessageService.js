@@ -1,9 +1,13 @@
 const amqp = require('amqplib')
-const uri = 'amqp://localhost:5672'
+const uri = 'amqp://rabbitmq'
 const exchange = 'my_exchange'
 const exchangeType = 'topic'
 const queue = 'CompetitionServiceQueue'
-const routingKeys = require('../../routingKeys')
+const routingKeys = {
+  competitionAddKey: '#.Competition.#.Add.#',
+  targetImageAddKey: '#.TargetImage.#.Add.#',
+  targetImageRemoveKey: '#.TargetImage.#.Remove.#',
+}
 const CompetitionService = require('../services/CompetitionService')
 
 let connection

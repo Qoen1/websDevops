@@ -1,8 +1,20 @@
 const express = require('express')
 const app = express()
 const mongoose = require("mongoose")
+const promBundle = require('express-prom-bundle')
+const metrics_middleware = promBundle({
+  includePath: true,
+  includeStatusCode: true,
+  normalizePath: true,
+  promClient: {
+    collectDefaultMetrics: {}
+  }
+})
 
-mongoose.connect('mongodb://localhost:27017/TargetImage')
+mongoose.connect('mongodb://mongo/TargetImage')
+
+//middleware
+app.use(metrics_middleware)
 
 //routes
 app.use('/', require('./routes/routes'));
@@ -15,4 +27,4 @@ app.get('/', function(req, res){
 });
 
 
-app.listen(4000)
+app.listen(6000)
