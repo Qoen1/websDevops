@@ -1,20 +1,18 @@
-const express = require('express');
-var bodyParser = require('body-parser')
-const app = express();
-// mongoose.connect('mongodb://localhost:27017/expressJSTest',{ useNewUrlParser: true });
+const express = require('express')
+const app = express()
+const mongoose = require("mongoose")
 
-var jsonParser = bodyParser.json()
+mongoose.connect('mongodb://localhost:27017/TargetImage')
 
 //routes
-
-// app.use('/rooms/:id/lines', jsonParser, require('./routes/Lines'));
+app.use('/', require('./routes/routes'));
 
 //end routes
 
 //error handler
 app.get('/', function(req, res){
-  res.send('feckin\' works!');
+  res.send('feckin\' works!')
 });
 
 
-app.listen(3000);
+app.listen(4000)

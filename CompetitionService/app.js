@@ -1,19 +1,23 @@
-const express = require('express');
-var bodyParser = require('body-parser')
-const app = express();
-// mongoose.connect('mongodb://localhost:27017/expressJSTest',{ useNewUrlParser: true });
+const express = require('express')
+const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
+const app = express()
 
-var jsonParser = bodyParser.json()
+const jsonParser = bodyParser.json()
+
+mongoose.connect('mongodb://localhost:27017/expressJSTest',{ useNewUrlParser: true });
 
 //routes
+app.use('/', jsonParser, require('./routes/routes'));
 
-// app.use('/rooms/:id/lines', jsonParser, require('./routes/Lines'));
 
 //end routes
 
+
 //error handler
 app.get('/', function(req, res){
-  res.send('feckin\' works!');
+  res.status(404)
+  res.send()
 });
 
 
