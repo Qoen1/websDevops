@@ -6,6 +6,7 @@ services:
       - 1000:3000
     depends_on:
       - mongo-express
+      - rabbitmq
   competitionservice:
     build:
       context: ./CompetitionService
@@ -13,6 +14,7 @@ services:
       - 2000:3000
     depends_on:
       - mongo-express
+      - rabbitmq
   fotoanalyseservice:
     build:
       context: ./FotoAnalyseService
@@ -20,13 +22,12 @@ services:
       - 3000:3000
     depends_on:
       - mongo-express
+      - rabbitmq
   gateway:
     build:
       context: ./gateway
     ports:
       - 4000:3000
-    depends_on:
-      - mongo-express
   submissionimageservice:
     build:
       context: ./SubmissionImageService
@@ -34,6 +35,7 @@ services:
       - 5000:3000
     depends_on:
         - mongo-express
+        - rabbitmq
   targetimageservice:
     build:
       context: ./TargetImageService
@@ -41,6 +43,7 @@ services:
       - 6000:3000
     depends_on:
       - mongo-express
+      - rabbitmq
   mongo-express:
     image: mongo
     restart: always
@@ -51,3 +54,10 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus:/etc/prometheus
+    ports:
+      - 9090:9090
+    command: --web.enable-lifecycle --config.file=/etc/prometheus/prometheus.yml

@@ -3,7 +3,11 @@ const uri = 'amqp://localhost:5672'
 const exchange = 'my_exchange'
 const exchangeType = 'topic'
 const queue = 'targetImageQueue'
-const routingKeys = require('../../routingKeys')
+const routingKeys = {
+  competitionAddKey: '#.Competition.#.Add.#',
+  targetImageAddKey: '#.TargetImage.#.Add.#',
+  targetImageRemoveKey: '#.TargetImage.#.Remove.#',
+}
 
 let connection
 let channel
