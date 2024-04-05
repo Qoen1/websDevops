@@ -23,16 +23,26 @@ class CompetitionService{
 
   GetCompetition(id){
     return new Promise((resolve, reject) => {
-      Competition.findOne({_id: id}).then(x => {
+      Competition.findById(id).then(x => {
+        if(x === undefined || x === null){
+          reject({
+            statusCode: 404,
+            message: 'no competition exists with id ' + id
+          })
+        }
         resolve(x)
       })
     })
   }
 
-  async RegisterTargetImage(targetImageId, competitionId){
-    let targetImage = await Competition.findOne({_id: competitionId})
-    targetImage.TargetImageId = targetImageId
-    targetImage.save()
+  RegisterTargetImage(targetImageId, competitionId){
+    return Competition.findOne({_id: competitionId}).then( competition => {
+      if(competition === undefined || competition === null){
+        return
+      }
+      competition.TargetImageId = targetImageId
+      competition.save()
+    })
   }
 }
 

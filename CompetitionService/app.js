@@ -16,7 +16,8 @@ app.use('/', jsonParser, require('./routes/routes'));
 
 //error handler
 app.get('/', function(req, res){
-  res.send('feckin\' works!');
+  res.status(404)
+  res.send()
 });
 
 

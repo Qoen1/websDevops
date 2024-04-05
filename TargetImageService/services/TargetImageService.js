@@ -33,6 +33,12 @@ class TargetImageService {
   GetImage (id) {
     return new Promise((resolve, reject) => {
       TargetImage.findOne({_id: id}).then(result => {
+        if(result === undefined || result === null){
+          reject({
+            statusCode: 404,
+            message: 'no target image exists with id ' + id
+          })
+        }
         resolve(result)
       })
     })

@@ -10,6 +10,9 @@ router.get('/:id', (request, result, next)=>{
 
   competitionService.GetCompetition(request.params.id).then(competition => {
     result.send(competition)
+  }).catch(error => {
+    result.status(error.statusCode)
+    result.send(error.message)
   })
 })
 
@@ -19,6 +22,9 @@ router.post('/', (request, result, next)=>{
 
   competitionService.SaveCompetition(userId, title).then(x => {
     result.send(x)
+  }).catch(error => {
+    result.status(error.statusCode)
+    result.send(error.message)
   })
 })
 
