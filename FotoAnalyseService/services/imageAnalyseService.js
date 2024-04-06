@@ -3,11 +3,9 @@ const FormData = require('form-data');
 const got = require('got');
 const { response } = require('express');
 
-//TODO: use secret .env variables
-const apiKey = '';
-const apiSecret = '';
 
-
+const apiKey = process.env.API_KEY;
+const apiSecret = process.env.API_SECRET;
 
 class ImageAnalyseService {
     async getTagsFromImage(imageBase64) {   
