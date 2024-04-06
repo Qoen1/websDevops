@@ -3,6 +3,8 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const app = express()
 const promBundle = require('express-prom-bundle')
+const mongoURI = 'mongodb://localhost:27017/Competition';
+
 const metrics_middleware = promBundle({
   includePath: true,
   includeStatusCode: true,
@@ -14,7 +16,7 @@ const metrics_middleware = promBundle({
 
 const jsonParser = bodyParser.json()
 app.use(metrics_middleware)
-mongoose.connect('mongodb://localhost:27017/expressJSTest',{ useNewUrlParser: true });
+mongoose.connect(mongoURI);
 
 //routes
 app.use('/', jsonParser, require('./routes/routes'));
@@ -24,9 +26,9 @@ app.use('/', jsonParser, require('./routes/routes'));
 
 
 //error handler
-app.get('/', function(req, res){
-  res.status(404)
-  res.send()
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
 });
 
 

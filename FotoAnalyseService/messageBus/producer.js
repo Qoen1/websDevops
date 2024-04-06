@@ -22,7 +22,6 @@ class Producer {
         channel.assertExchange(exchange, exchangeType, { durable: true })
       })
     });
-    console.log('channel initialilzed');
   }
 
   NotifyScoreAdded(imageId, competitionId, score){
@@ -32,6 +31,7 @@ class Producer {
       score: score
     }));
     channel.publish(exchange, routingKeys.scoreAddedKey, publishedMessage);
+    console.log('score calculated for image.');
   }
 }
 

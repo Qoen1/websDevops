@@ -9,7 +9,7 @@ require('dotenv').config();
 
 
 const PORT = process.env.PORT || 3002;
-mongoose.connect(mongoURI,{ useNewUrlParser: true });
+mongoose.connect(mongoURI);
 
 
 
