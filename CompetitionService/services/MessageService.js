@@ -8,7 +8,8 @@ const routingKeys = {
   targetImageAddKey: '#.TargetImage.#.Add.#',
   targetImageRemoveKey: '#.TargetImage.#.Remove.#',
   submissionImageAddKey: '#.SubmissionImage.#.Add.#',
-  scoreAddedKey: '#.Score.#.Add.#'
+  scoreAddedKey: '#.Score.#.Add.#',
+  submissionRegisteredKey: '#.Competition.#.SubmissionRegistered.*'
 }
 const CompetitionService = require('../services/CompetitionService')
 
@@ -63,14 +64,15 @@ SubscribeToScoreAdded() {
 }
 
   HandleTargetImageCreated(message){
-    console.log("target image created!");
-    this.competitionService.RegisterTargetImage(message.imageId, message.competitionId);
+    this.competitionService.RegisterTargetImage(message.competitionId, message.imageId);
   }
 
   HandleSubmissionImageCreated(message){
+    console.log(message);
     console.log("submission image created!");
-    //console.log(message);
+    console.log(message.imageId, message.userId, message.competitionId);
     this.competitionService.RegisterSubmissionImage(message.imageId, message.userId, message.competitionId);
+    this.NotifySubmissionRegistered(message.imageId, message.competitionId, message.image);
   }
 
   HandleScoreAdded(message) {
@@ -82,6 +84,14 @@ SubscribeToScoreAdded() {
     channel.publish(exchange, routingKeys.competitionAddKey, Buffer.from(JSON.stringify({
       competitionId: competition._id,
       createdAt: competition.createdAt
+    })));
+  }
+
+  NotifySubmissionRegistered(imageId, competitionId, image) {    
+    channel.publish(exchange, routingKeys.submissionRegisteredKey, Buffer.from(JSON.stringify({
+      imageId: imageId,
+      competitionId: competitionId,
+      image: image
     })));
   }
 }

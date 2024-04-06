@@ -9,7 +9,7 @@ amqp.connect(rabbitMQUrl, function (error0, connection) {
   if (error0) {
     throw error0;
   }  
-  const queues = ['TargetImageQueue', 'SubmissionImageQueue'];
+  const queues = ['TargetImageAnalyseQueue', 'CompetitionServiceQueue'];
   
   connection.createChannel(function(error1, channel) {
     if(error1) {
@@ -22,15 +22,14 @@ amqp.connect(rabbitMQUrl, function (error0, connection) {
       channel.assertQueue(queue)
     });
 
-    channel.bindQueue('TargetImageQueue', exchange, '#.TargetImage.#.Add.*');
-    channel.bindQueue('SubmissionImageQueue', exchange, '#.SubmissionImage.#.Add.*');
-    channel.bindQueue('SubmissionImageQueue', exchange, '#.SubmissionImage.#.Delete.*');
+    channel.bindQueue('TargetImageAnalyseQueue', exchange, '#.TargetImage.#.Add.*');
+    channel.bindQueue('CompetitionServiceQueue', exchange, '#.Competition.#.SubmissionRegistered.*');
 
-    channel.consume('TargetImageQueue', function(msg) {
+    channel.consume('TargetImageAnalyseQueue', function(msg) {
       handleTargetImageMessage(JSON.parse(msg.content.toString()));
     });
 
-    channel.consume('SubmissionImageQueue', function(msg) {
+    channel.consume('CompetitionServiceQueue', function(msg) {
       handleSubmissionImageMessage(JSON.parse(msg.content.toString()));
     });
   });  
