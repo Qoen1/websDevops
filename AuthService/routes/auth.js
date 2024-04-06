@@ -29,7 +29,7 @@ router.post('/login', async (req, res) => {
 router.post('/check', async (req, res) => {
     const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
     if (!token) {
-        return res.status(401).json({ error: 'Unauthorized - No token provided' });
+        return res.status(200).json({ authenticated: false });
     }
 
     jwt.verify(token, 'secret', (err, decodedToken) => {

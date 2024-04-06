@@ -19,6 +19,7 @@ router.get('/:id', (request, result, next)=>{
 router.post('/', (request, result, next)=>{
   const userId = request.body.userId
   const title = request.body.title
+  console.log(title)
 
   competitionService.SaveCompetition(userId, title).then(x => {
     result.send(x)

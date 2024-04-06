@@ -1,5 +1,5 @@
 const amqp = require('amqplib')
-const uri = 'amqp://rabbitmq'
+const uri = 'amqp://localhost:5672'
 const exchange = 'my_exchange'
 const exchangeType = 'topic'
 const queue = 'CompetitionServiceQueue'
@@ -22,7 +22,7 @@ class MessageService{
       connection = x
       connection.createChannel().then(y => {
         channel = y
-        channel.assertExchange(exchange, exchangeType, {durable: false})
+        channel.assertExchange(exchange, exchangeType, {durable: true})
         channel.assertQueue(queue)
         this.SubscribeToTargetImageCreated()
       })

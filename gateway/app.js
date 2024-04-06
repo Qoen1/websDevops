@@ -14,9 +14,13 @@ const metrics_middleware = promBundle({
 
 app.use(metrics_middleware)
 
-//routes
+//public routes
 app.use('/', jsonParser, require('./routes/auth'))
-//end routes
+
+//auth middleware
+app.use(require('./middleware/AuthenticatedMiddleware'))
+//private routes
+app.use('/competitions', jsonParser, require('./routes/competition'))
 
 //error handler
 app.get('/', function(req, res){
