@@ -31,8 +31,6 @@ class MessageService{
   }
 
   NotifySubmissionImageCreated(imageId, competitionId, userId, image){
-    console.log('sent message with id: ', imageId);
-    console.log(userId);
     channel.publish(exchange, routingKeys.submissionImageAddKey, Buffer.from(JSON.stringify({
       imageId: imageId,
       competitionId: competitionId,

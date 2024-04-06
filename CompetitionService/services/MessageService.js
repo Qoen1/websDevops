@@ -68,9 +68,7 @@ SubscribeToScoreAdded() {
   }
 
   HandleSubmissionImageCreated(message){
-    console.log(message);
     console.log("submission image created!");
-    console.log(message.imageId, message.userId, message.competitionId);
     this.competitionService.RegisterSubmissionImage(message.imageId, message.userId, message.competitionId);
     this.NotifySubmissionRegistered(message.imageId, message.competitionId, message.image);
   }

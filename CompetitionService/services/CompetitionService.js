@@ -55,9 +55,6 @@
   }
 
     async RegisterSubmissionImage(imageId, userId, competitionId) {
-      console.log('register called');
-      console.log(imageId);
-      console.log(userId);
       if(userId == false || userId == null || userId == undefined) {
         return { status: 500, message: "User id not provided."}
       }
