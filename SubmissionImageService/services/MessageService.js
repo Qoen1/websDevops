@@ -8,6 +8,7 @@ const routingKeys = {
   targetImageAddKey: '#.TargetImage.#.Add.#',
   targetImageRemoveKey: '#.TargetImage.#.Remove.#',
   submissionImageAddKey: '#.SubmissionImage.#.Add.#',
+  submissionImageDeleteKey: '#.SubmissionImage.#.Delete.#',
 }
 
 let connection
@@ -29,12 +30,22 @@ class MessageService{
     })
   }
 
-  NotifySubmissionImageCreated(imageId, competitionId, image){
-      channel.publish(exchange, routingKeys.submissionImageAddKey, Buffer.from(JSON.stringify({
-        imageId: imageId,
-        competitionId: competitionId,
-        image: image
-      })))
+  NotifySubmissionImageCreated(imageId, competitionId, userId, image){
+    console.log('sent message with id: ', imageId);
+    console.log(userId);
+    channel.publish(exchange, routingKeys.submissionImageAddKey, Buffer.from(JSON.stringify({
+      imageId: imageId,
+      competitionId: competitionId,
+      userId: userId,
+      image: image
+    })));
+  }
+
+  NotifySubmissionImageDeleted(imageId, competitionId){
+    channel.publish(exchange, routingKeys.submissionImageDeleteKey, Buffer.from(JSON.stringify({
+      imageId: imageId,
+      competitionId: competitionId,
+    })));
   }
 }
 

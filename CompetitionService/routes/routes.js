@@ -28,4 +28,4 @@ router.post('/', (request, result, next)=>{
   })
 })
 
-module.exports = router
+module.exports = router;

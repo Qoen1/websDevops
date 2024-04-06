@@ -5,22 +5,32 @@ const Producer = require('../messageBus/producer');
 class ImageService {
     producer = new Producer();
 
-    saveTargetImage(imageId, competitionId, imageBase64) {
+    async saveTargetImage(imageId, competitionId, imageBase64) {
+        const existingImage = await TargetImage.findOne({ imageId: imageId, competitionId: competitionId });
+        if (existingImage) {
+            return { status: 409, message: "Target image already exists." };
+        }
         const targetImage = new TargetImage({
-        imageId: imageId,
-        competitionId: competitionId,
-        imageBase64: imageBase64,
+            imageId: imageId,
+            competitionId: competitionId,
+            imageBase64: imageBase64,
         });
-        return targetImage.save();
+        await targetImage.save();
+        return { status: 201, message: "Target image saved successfully." };
     }
     
-    saveSubmissionImage(imageId, competitionId, imageBase64) {
+    async saveSubmissionImage(imageId, competitionId, imageBase64) {
+        const existingImage = await SubmissionImage.findOne({ imageId: imageId, competitionId: competitionId });
+        if (existingImage) {
+            return { status: 409, message: "Submission image already exists." };
+        }
         const submissionImage = new SubmissionImage({
             imageId: imageId,
             competitionId: competitionId,
             imageBase64: imageBase64,
         });
-        return submissionImage.save();
+        await submissionImage.save();
+        return { status: 201, message: "Submission image saved successfully." };
     }
 
     async getTargetImageBase64(competitionId) {
