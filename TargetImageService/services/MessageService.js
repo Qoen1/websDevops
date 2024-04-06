@@ -14,7 +14,7 @@ let channel
 
 class MessageService{
   constructor () {
-    this.init()
+    this.init();
   }
 
   init(){
@@ -37,4 +37,4 @@ class MessageService{
   }
 }
 
-module.exports = MessageService
+module.exports = MessageService;

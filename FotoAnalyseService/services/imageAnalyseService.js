@@ -2,6 +2,7 @@ const fs = require('fs');
 const FormData = require('form-data');
 const got = require('got');
 const { response } = require('express');
+require('dotenv').config();
 
 
 const apiKey = process.env.API_KEY;
@@ -55,7 +56,7 @@ class ImageAnalyseService {
     }
 
     extractDistanceFromResponse(response) {
-        return JSON.parse(response.body).result;
+        return JSON.parse(response.body).result.distance;
     }
 }
 

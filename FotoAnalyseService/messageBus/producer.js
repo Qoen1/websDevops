@@ -21,15 +21,17 @@ class Producer {
         channel = y
         channel.assertExchange(exchange, exchangeType, { durable: true })
       })
-    })
+    });
+    console.log('channel initialilzed');
   }
 
   NotifyScoreAdded(imageId, competitionId, score){
-      channel.publish(exchange, routingKeys.scoreAddedKey, Buffer.from(JSON.stringify({
-        imageId: imageId,
-        competitionId: competitionId,
-        score: score
-      })))
+    const publishedMessage = Buffer.from(JSON.stringify({
+      imageId: imageId,
+      competitionId: competitionId,
+      score: score
+    }));
+    channel.publish(exchange, routingKeys.scoreAddedKey, publishedMessage);
   }
 }
 

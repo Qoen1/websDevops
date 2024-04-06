@@ -3,6 +3,8 @@ const SubmissionImage = require('../models/submissionImage');
 const Producer = require('../messageBus/producer');
 
 class ImageService {
+    producer = new Producer();
+
     saveTargetImage(imageId, competitionId, imageBase64) {
         const targetImage = new TargetImage({
         imageId: imageId,
@@ -42,9 +44,7 @@ class ImageService {
                 { new: true }
             );
             if (submissionImage) {
-                console.log('Score added to SubmissionImage:', submissionImage.imageId);
-                const producer = new Producer();
-                producer.NotifyScoreAdded(submissionImage.imageId, submissionImage.competitionId, score);
+                this.producer.NotifyScoreAdded(submissionImage.imageId, submissionImage.competitionId, score);
             } else {
                 throw new Error('Submission image not found for the given imageId');
             }
