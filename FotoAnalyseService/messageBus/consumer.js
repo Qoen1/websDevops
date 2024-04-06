@@ -2,6 +2,7 @@ const amqp = require('amqplib/callback_api');
 const ImageService = require('../services/imageService');
 const ImageAnalyseService = require('../services/imageAnalyseService');
 const exchange = 'my_exchange'
+const queue = 'FotoAnalyseQueue';
 
 const rabbitMQUrl = 'amqp://localhost:5672';
 
@@ -9,7 +10,7 @@ amqp.connect(rabbitMQUrl, function (error0, connection) {
   if (error0) {
     throw error0;
   }  
-  const queues = ['TargetImageAnalyseQueue', 'CompetitionServiceQueue'];
+  
   
   connection.createChannel(function(error1, channel) {
     if(error1) {
@@ -17,19 +18,16 @@ amqp.connect(rabbitMQUrl, function (error0, connection) {
     }
 
     channel.assertExchange(exchange, 'topic');
-    
-    queues.forEach(queue => {
-      channel.assertQueue(queue)
-    });
+    channel.assertQueue(queue);
 
-    channel.bindQueue('TargetImageAnalyseQueue', exchange, '#.TargetImage.#.Add.*');
-    channel.bindQueue('CompetitionServiceQueue', exchange, '#.Competition.#.SubmissionRegistered.*');
+    channel.bindQueue(queue, exchange, '#.TargetImage.#.Add.*');
+    channel.bindQueue(queue, exchange, '#.Competition.#.SubmissionRegistered.*');
 
-    channel.consume('TargetImageAnalyseQueue', function(msg) {
+    channel.consume(queue, function(msg) {
       handleTargetImageMessage(JSON.parse(msg.content.toString()));
     });
 
-    channel.consume('CompetitionServiceQueue', function(msg) {
+    channel.consume(queue, function(msg) {
       handleSubmissionImageMessage(JSON.parse(msg.content.toString()));
     });
   });  
