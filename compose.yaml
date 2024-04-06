@@ -2,52 +2,98 @@ services:
   authservice:
     build:
       context: ./AuthService
+    container_name: authservice
+    hostname: "authservice"
+    labels:
+      NAME: "authservice"
     ports:
       - 1000:3000
     depends_on:
       - mongo-express
+      - rabbitmq
   competitionservice:
     build:
       context: ./CompetitionService
+    container_name: competitionservice
+    hostname: "competitionservice"
+    labels:
+      NAME: "competitionservice"
     ports:
       - 2000:3000
     depends_on:
       - mongo-express
+      - rabbitmq
   fotoanalyseservice:
     build:
       context: ./FotoAnalyseService
+    container_name: fotoanalyseservice
+    hostname: "fotoanalyseservice"
+    labels:
+      NAME: "fotoanalyseservice"
     ports:
       - 3000:3000
     depends_on:
       - mongo-express
+      - rabbitmq
   gateway:
     build:
       context: ./gateway
+    container_name: gateway
+    hostname: "gateway"
+    labels:
+      NAME: "gateway"
     ports:
       - 4000:3000
-    depends_on:
-      - mongo-express
   submissionimageservice:
     build:
       context: ./SubmissionImageService
+    container_name: submissionimageservice
+    hostname: "submissionimageservice"
+    labels:
+      NAME: "submissionimageservice"
     ports:
       - 5000:3000
     depends_on:
         - mongo-express
+        - rabbitmq
   targetimageservice:
     build:
       context: ./TargetImageService
+    container_name: targetimageservice
+    hostname: "targetimageservice"
+    labels:
+      NAME: "targetimageservice"
     ports:
-      - 6000:3000
+      - 6000:6000
     depends_on:
       - mongo-express
+      - rabbitmq
   mongo-express:
     image: mongo
+    container_name: mongo
+    hostname: "mongo"
+    labels:
+      NAME: "mongo"
     restart: always
     ports:
       - 6942:27017
   rabbitmq:
-    image: rabbitmq:3-management
+    image: rabbitmq:latest
+    container_name: rabbitmq
+    hostname: "rabbitmq"
+    labels:
+      NAME: "rabbitmq"
     ports:
       - 5672:5672
-      - 15672:15672
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus:/etc/prometheus
+    ports:
+      - 9090:9090
+    command: --web.enable-lifecycle --config.file=/etc/prometheus/prometheus.yml
+  grafana:
+    build: ./grafana
+    ports:
+      - 1234:3000
+
