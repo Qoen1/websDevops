@@ -16,84 +16,83 @@ const CompetitionService = require('../services/CompetitionService')
 let connection
 let channel
 
-class MessageService {
+class MessageService{
+  competitionService
   constructor(competitionService) {
-      this.competitionService = competitionService;
+    this.competitionService = new CompetitionService(this)
+
+    amqp.connect(rabbitMQUrl, { resubscribe: true }).then(x => {
+      connection = x
+      connection.createChannel().then(y => {
+        channel = y
+        channel.assertExchange(exchange, exchangeType, {durable: true})
+        this.SubscribeToTargetImageCreated();
+        this.SubscribeToSubmissionImageCreated();
+        this.SubscribeToScoreAdded();
+      });
+    });
   }
 
-  async connectToRabbitMQ() {
-      try {
-          const connection = await amqp.connect(rabbitMQUrl, { resubscribe: true });
-          const channel = await connection.createChannel();
-          await channel.assertExchange(exchange, exchangeType, { durable: true });
-          return channel;
-      } catch (error) {
-          console.error("Error connecting to RabbitMQ:", error);
-          throw error;
-      }
+  SubscribeToTargetImageCreated() {
+    channel.assertQueue('TargetImageQueue').then(() => {
+        channel.bindQueue('TargetImageQueue', exchange, routingKeys.targetImageAddKey).then(() => {
+            channel.consume('TargetImageQueue', message => {
+                this.HandleTargetImageCreated(JSON.parse(message.content));
+            });
+        });
+    });
+}
+
+SubscribeToSubmissionImageCreated() {
+    channel.assertQueue('SubmissionImageQueue').then(() => {
+        channel.bindQueue('SubmissionImageQueue', exchange, routingKeys.submissionImageAddKey).then(() => {
+            channel.consume('SubmissionImageQueue', message => {
+                this.HandleSubmissionImageCreated(JSON.parse(message.content));
+            });
+        });
+    });
+}
+
+SubscribeToScoreAdded() {
+    channel.assertQueue('ScoreAddedQueue').then(() => {
+        channel.bindQueue('ScoreAddedQueue', exchange, routingKeys.scoreAddedKey).then(() => {
+            channel.consume('ScoreAddedQueue', message => {
+                this.HandleScoreAdded(JSON.parse(message.content));
+            });
+        });
+    });
+}
+
+  HandleTargetImageCreated(message){
+    this.competitionService.RegisterTargetImage(message.competitionId, message.imageId);
   }
 
-  async startConsumers() {
-      channel = await this.connectToRabbitMQ();
-      this.SubscribeToTargetImageCreated();
-      this.SubscribeToSubmissionImageCreated();
-      this.SubscribeToScoreAdded();
+  HandleSubmissionImageCreated(message){
+    console.log(message);
+    console.log("submission image created!");
+    console.log(message.imageId, message.userId, message.competitionId);
+    this.competitionService.RegisterSubmissionImage(message.imageId, message.userId, message.competitionId);
+    this.NotifySubmissionRegistered(message.imageId, message.competitionId, message.image);
   }
 
-  async subscribeToQueue(queue, routingKey, handleMessage) {
-      try {
-          await channel.assertQueue(queue);
-          await channel.bindQueue(queue, exchange, routingKey);
-          await channel.consume(queue, message => {
-              handleMessage(JSON.parse(message.content));
-          });
-      } catch (error) {
-          console.error(`Error subscribing to queue '${queue}':`, error);
-          throw error;
-      }
+  HandleScoreAdded(message) {
+    console.log('Submission image scored!');
+    this.competitionService.AddScoreToSubmission(message.imageId, message.score);
   }
 
-  async SubscribeToTargetImageCreated() {
-      await this.subscribeToQueue(queue, routingKeys.targetImageAddKey, this.HandleTargetImageCreated.bind(this));
+  NotifyCompetitionCreated(competition){
+    channel.publish(exchange, routingKeys.competitionAddKey, Buffer.from(JSON.stringify({
+      competitionId: competition._id,
+      createdAt: competition.createdAt
+    })));
   }
 
-  async SubscribeToSubmissionImageCreated() {
-      await this.subscribeToQueue(queue, routingKeys.submissionImageAddKey, this.HandleSubmissionImageCreated.bind(this));
-  }
-
-  async SubscribeToScoreAdded() {
-      await this.subscribeToQueue(queue, routingKeys.scoreAddedKey, this.HandleScoreAdded.bind(this));
-  }
-
-  async HandleTargetImageCreated(message) {
-      await this.competitionService.RegisterTargetImage(message.competitionId, message.imageId);
-  }
-
-  async HandleSubmissionImageCreated(message) {
-      console.log("Submission image created!");
-      console.log(message.imageId, message.userId, message.competitionId);
-      await this.competitionService.RegisterSubmissionImage(message.imageId, message.userId, message.competitionId);
-      await this.NotifySubmissionRegistered(message.imageId, message.competitionId, message.image);
-  }
-
-  async HandleScoreAdded(message) {
-      console.log('Submission image scored!');
-      await this.competitionService.AddScoreToSubmission(message.imageId, message.score);
-  }
-
-  async NotifyCompetitionCreated(competition) {
-      await channel.publish(exchange, routingKeys.competitionAddKey, Buffer.from(JSON.stringify({
-          competitionId: competition._id,
-          createdAt: competition.createdAt
-      })));
-  }
-
-  async NotifySubmissionRegistered(imageId, competitionId, image) {
-      await channel.publish(exchange, routingKeys.submissionRegisteredKey, Buffer.from(JSON.stringify({
-          imageId: imageId,
-          competitionId: competitionId,
-          image: image
-      })));
+  NotifySubmissionRegistered(imageId, competitionId, image) {    
+    channel.publish(exchange, routingKeys.submissionRegisteredKey, Buffer.from(JSON.stringify({
+      imageId: imageId,
+      competitionId: competitionId,
+      image: image
+    })));
   }
 }
 

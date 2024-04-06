@@ -3,8 +3,8 @@ const router = new express.Router()
 const MessageService = require('../services/MessageService')
 const CompetitionService = require('../services/CompetitionService')
 
-const messageService = new MessageService()
-const competitionService = messageService.competitionService
+const messageService = new MessageService();
+const competitionService = messageService.competitionService;
 
 router.get('/:id', (request, result, next)=>{
 
