@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const AuthService = require('../services/authService');
+const jwt = require("jsonwebtoken");
 //KeyCloak is an alternative
 
 router.post('/register', async (req, res) => {
@@ -24,5 +25,20 @@ router.post('/login', async (req, res) => {
         res.status(401).json({ error: error.message });
     }
 });
+
+router.post('/check', async (req, res) => {
+    const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
+    if (!token) {
+        return res.status(401).json({ error: 'Unauthorized - No token provided' });
+    }
+
+    jwt.verify(token, 'secret', (err, decodedToken) => {
+        if (err) {
+            return res.status(200).json({ authenticated: false });
+        }
+        req.decodedToken = decodedToken;
+        res.send({authenticated: true})
+    })
+})
 
 module.exports = router;

@@ -1,6 +1,7 @@
-const express = require('express');
+const express = require('express')
 var bodyParser = require('body-parser')
 const app = express();
+const jsonParser = bodyParser.json()
 const promBundle = require('express-prom-bundle')
 const metrics_middleware = promBundle({
   includePath: true,
@@ -12,10 +13,9 @@ const metrics_middleware = promBundle({
 })
 
 app.use(metrics_middleware)
-var jsonParser = bodyParser.json()
 
 //routes
-app.use('/', require('./routes/myRoutes'))
+app.use('/', jsonParser, require('./routes/auth'))
 //end routes
 
 //error handler
