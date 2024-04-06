@@ -7,6 +7,7 @@ const routingKeys = {
   competitionAddKey: '#.Competition.#.Add.#',
   targetImageAddKey: '#.TargetImage.#.Add.#',
   targetImageRemoveKey: '#.TargetImage.#.Remove.#',
+  submissionImageAddKey: '#.SubmissionImage.#.Add.#',
 }
 
 let connection
@@ -28,8 +29,8 @@ class MessageService{
     })
   }
 
-  NotifyTargetImageCreated(imageId, competitionId, image){
-      channel.publish(exchange, routingKeys.targetImageAddKey, Buffer.from(JSON.stringify({
+  NotifySubmissionImageCreated(imageId, competitionId, image){
+      channel.publish(exchange, routingKeys.submissionImageAddKey, Buffer.from(JSON.stringify({
         imageId: imageId,
         competitionId: competitionId,
         image: image

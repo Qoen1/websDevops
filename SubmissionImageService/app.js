@@ -1,6 +1,6 @@
-const express = require('express');
-var bodyParser = require('body-parser')
-const app = express();
+const express = require('express')
+const app = express()
+const mongoose = require("mongoose")
 const promBundle = require('express-prom-bundle')
 const metrics_middleware = promBundle({
   includePath: true,
@@ -10,20 +10,21 @@ const metrics_middleware = promBundle({
     collectDefaultMetrics: {}
   }
 })
-// mongoose.connect('mongodb://localhost:27017/expressJSTest',{ useNewUrlParser: true });
+
+mongoose.connect('mongodb://mongo/SubmissionImage')
+
+//middleware
 app.use(metrics_middleware)
-var jsonParser = bodyParser.json()
 
 //routes
-
-// app.use('/rooms/:id/lines', jsonParser, require('./routes/Lines'));
+app.use('/', require('./routes/routes'));
 
 //end routes
 
 //error handler
 app.get('/', function(req, res){
-  res.send('feckin\' works!');
+  res.send('feckin\' works!')
 });
 
 
-app.listen(3000);
+app.listen(3000)

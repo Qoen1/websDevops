@@ -1,9 +1,9 @@
-const TargetImage = require('../models/TargetImage')
+const SubmissionImage = require('../models/SubmissionImage')
 // const Competition = require('../models/Competition')
 const MessageService = require('./MessageService')
 
 
-class TargetImageService {
+class SubmissionImageService {
   messageService = new MessageService()
 
   SaveImage(file, fileType, userId, CompetitionId){
@@ -15,7 +15,7 @@ class TargetImageService {
       //     reject(competitions.length)
       //   }
 
-        let newFile = new TargetImage({
+        let newFile = new SubmissionImage({
           imageBuffer: file,
           imageType: fileType,
           userId: userId,
@@ -23,7 +23,7 @@ class TargetImageService {
         })
         newFile.save().then(data => {
           console.log(this.messageService)
-          this.messageService.NotifyTargetImageCreated(data._id, CompetitionId, data.imageBuffer)
+          this.messageService.NotifySubmissionImageCreated(data._id, CompetitionId, data.imageBuffer)
           resolve(data._id)
         })
       // })
@@ -32,7 +32,7 @@ class TargetImageService {
 
   GetImage (id) {
     return new Promise((resolve, reject) => {
-      TargetImage.findOne({_id: id}).then(result => {
+      SubmissionImage.findOne({_id: id}).then(result => {
         if(result === undefined || result === null){
           reject({
             statusCode: 404,
@@ -45,4 +45,4 @@ class TargetImageService {
   }
 }
 
-module.exports = TargetImageService
+module.exports = SubmissionImageService
