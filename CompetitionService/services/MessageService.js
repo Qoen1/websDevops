@@ -7,8 +7,9 @@ const routingKeys = {
   competitionAddKey: '#.Competition.#.Add.#',
   targetImageAddKey: '#.TargetImage.#.Add.#',
   targetImageRemoveKey: '#.TargetImage.#.Remove.#',
+  scoreAddedKey: '#.Score.#.Add.#',
 }
-const CompetitionService = require('../services/CompetitionService')
+const CompetitionService = require('../services/CompetitionService');
 
 let connection
 let channel
@@ -24,7 +25,8 @@ class MessageService{
         channel = y
         channel.assertExchange(exchange, exchangeType, {durable: false})
         channel.assertQueue(queue)
-        this.SubscribeToTargetImageCreated()
+        this.SubscribeToTargetImageCreated();
+        this.SubscribeTo
       })
     })
   }

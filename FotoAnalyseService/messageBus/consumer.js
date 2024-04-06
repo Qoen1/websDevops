@@ -10,7 +10,7 @@ amqp.connect(rabbitMQUrl, function (error0, connection) {
   if (error0) {
     throw error0;
   }  
-  const queues = ['TargetImageQueue', 'SubmissionImageQueue'];
+  const queue = 'FotoAnalyseQueue';
   
   connection.createChannel(function(error1, channel) {
     if(error1) {
@@ -19,18 +19,18 @@ amqp.connect(rabbitMQUrl, function (error0, connection) {
 
     channel.assertExchange(exchange, 'topic');
     
-    queues.forEach(queue => {
-      channel.assertQueue(queue)
-    });
+ 
+    channel.assertQueue(queue)
+   
 
-    channel.bindQueue('TargetImageQueue', exchange, '#.TargetImage.#.Add.*');
-    channel.bindQueue('SubmissionImageQueue', exchange, '#.SubmissionImage.#.Add.*');
+    channel.bindQueue(queue, exchange, '#.TargetImage.#.Add.*');
+    channel.bindQueue(queue, exchange, '#.SubmissionImage.#.Add.*');
 
-    channel.consume('TargetImageQueue', function(msg) {
+    channel.consume(queue, function(msg) {
       handleTargetImageMessage(JSON.parse(msg.content.toString()));
     });
 
-    channel.consume('SubmissionImageQueue', function(msg) {
+    channel.consume(queue, function(msg) {
       handleSubmissionImageMessage(JSON.parse(msg.content.toString()));
     });
   });  
