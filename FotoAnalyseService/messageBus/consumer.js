@@ -28,11 +28,13 @@ amqp.connect(rabbitMQUrl, function (error0, connection) {
     channel.bindQueue('SubmissionImageQueue', 'SubmissionImage', '*.SubmissionImage.#.Add.#');
 
     async function handleMessage(msg) {
+      //save message here
       const message = JSON.parse(msg.content.toString());
       const imageData = extractImageData(message);
       
       if (msg.fields.routingKey.startsWith('TargetImage')) {
         const imageService = new ImageService();
+
         imageService.saveTargetImage(imageData)
           .then(() => console.log('TargetImage saved to database'))
           .catch(err => console.log('Error saving TargetImage:', err));
@@ -41,12 +43,16 @@ amqp.connect(rabbitMQUrl, function (error0, connection) {
         const imageAnalyseService = new ImageAnalyseService();
         const targetImageBase64 = await imageService.getTargetImageBase64(imageData.competitionId);
         const submissionImageBase64 = imageData.imageBase64;
-        const score = imageAnalyseService.compareImages(targetImageBase64, submissionImageBase64);
+        
 
-        imageService.saveSubmissionImage(imageData, score)
+        imageService.saveSubmissionImage(imageData)
           .then(() => console.log('SubmissionImage saved to database'))
-          .catch(err => console.log('Error saving SubmissionImage:', err));
+          .catch(err => console.log('Error saving SubmissionImage:', err));    
+          
+        const score = imageAnalyseService.compareImages(targetImageBase64, submissionImageBase64);
+        imageService.addScoreToImage(imageData.imageId, score);
       }
+      
     }  
 
     channel.consume('TargetImageQueue', handleMessage, { noAck: true });
