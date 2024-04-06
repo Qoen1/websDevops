@@ -1,29 +1,29 @@
 const express = require('express');
-var bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const mongoose = require("mongoose");
+require('./messageBus/consumer');
 const app = express();
-const promBundle = require('express-prom-bundle')
-const metrics_middleware = promBundle({
-  includePath: true,
-  includeStatusCode: true,
-  normalizePath: true,
-  promClient: {
-    collectDefaultMetrics: {}
-  }
-})
-// mongoose.connect('mongodb://localhost:27017/expressJSTest',{ useNewUrlParser: true });
-app.use(metrics_middleware)
-var jsonParser = bodyParser.json()
+const mongoURI = 'mongodb://localhost:27017/FotoAnalyse';
+
+require('dotenv').config();
+
+
+const PORT = process.env.PORT || 3002;
+mongoose.connect(mongoURI,{ useNewUrlParser: true });
+
+
+
+//middleware
+app.use(bodyParser.json());
+app.use(express.json());
 
 //routes
 
-// app.use('/rooms/:id/lines', jsonParser, require('./routes/Lines'));
+
+
 
 //end routes
 
-//error handler
-app.get('/', function(req, res){
-  res.send('feckin\' works!');
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
-
-
-app.listen(3000);

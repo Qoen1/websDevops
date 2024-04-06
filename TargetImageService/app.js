@@ -1,7 +1,8 @@
-const express = require('express')
-const app = express()
-const mongoose = require("mongoose")
-const promBundle = require('express-prom-bundle')
+const express = require('express');
+const app = express();
+const mongoose = require("mongoose");
+const promBundle = require('express-prom-bundle');
+const mongoURI = 'mongodb://localhost:27017/TargetImage';
 const metrics_middleware = promBundle({
   includePath: true,
   includeStatusCode: true,
@@ -11,7 +12,7 @@ const metrics_middleware = promBundle({
   }
 })
 
-mongoose.connect('mongodb://mongo/TargetImage')
+mongoose.connect(mongoURI);
 
 //middleware
 app.use(metrics_middleware)
