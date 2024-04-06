@@ -10,14 +10,12 @@ const metrics_middleware = promBundle({
     collectDefaultMetrics: {}
   }
 })
-// mongoose.connect('mongodb://localhost:27017/expressJSTest',{ useNewUrlParser: true });
+
 app.use(metrics_middleware)
 var jsonParser = bodyParser.json()
 
 //routes
-
-// app.use('/rooms/:id/lines', jsonParser, require('./routes/Lines'));
-
+app.use('/', require('./routes/myRoutes'))
 //end routes
 
 //error handler
