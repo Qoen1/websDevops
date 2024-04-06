@@ -1,19 +1,32 @@
-const express = require('express');
-var bodyParser = require('body-parser')
-const app = express();
-// mongoose.connect('mongodb://localhost:27017/expressJSTest',{ useNewUrlParser: true });
+const express = require('express')
+const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
+const app = express()
+const promBundle = require('express-prom-bundle')
+const metrics_middleware = promBundle({
+  includePath: true,
+  includeStatusCode: true,
+  normalizePath: true,
+  promClient: {
+    collectDefaultMetrics: {}
+  }
+})
 
-var jsonParser = bodyParser.json()
+const jsonParser = bodyParser.json()
+app.use(metrics_middleware)
+mongoose.connect('mongodb://mongo/expressJSTest',{ useNewUrlParser: true });
 
 //routes
+app.use('/', jsonParser, require('./routes/routes'));
 
-// app.use('/rooms/:id/lines', jsonParser, require('./routes/Lines'));
 
 //end routes
 
+
 //error handler
 app.get('/', function(req, res){
-  res.send('feckin\' works!');
+  res.status(404)
+  res.send()
 });
 
 

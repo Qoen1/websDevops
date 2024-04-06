@@ -1,0 +1,28 @@
+global:
+  scrape_interval: 10s
+  evaluation_interval: 10s
+  scrape_timeout: 10s
+
+rule_files:
+  - alert.yml
+
+scrape_configs:
+  - job_name: "authservice"
+    static_configs:
+      - targets: [ "authservice:1000" ]
+  - job_name: "competitionservice"
+    static_configs:
+      - targets: [ "competitionservice:2000" ]
+  - job_name: "fotoanalyseservice"
+    static_configs:
+      - targets: [ "fotoanalyseservice:3000" ]
+  - job_name: "gateway"
+    static_configs:
+      - targets: [ "gateway:4000" ]
+  - job_name: "submissionimageservice"
+    static_configs:
+      - targets: [ "submissionimageservice:5000" ]
+  - job_name: "targetimageservice"
+    static_configs:
+      - targets: ["targetimageservice:6000"]
+

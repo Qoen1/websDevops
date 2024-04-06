@@ -1,8 +1,17 @@
 const express = require('express');
 var bodyParser = require('body-parser')
 const app = express();
+const promBundle = require('express-prom-bundle')
+const metrics_middleware = promBundle({
+  includePath: true,
+  includeStatusCode: true,
+  normalizePath: true,
+  promClient: {
+    collectDefaultMetrics: {}
+  }
+})
 // mongoose.connect('mongodb://localhost:27017/expressJSTest',{ useNewUrlParser: true });
-
+app.use(metrics_middleware)
 var jsonParser = bodyParser.json()
 
 //routes
@@ -17,4 +26,4 @@ app.get('/', function(req, res){
 });
 
 
-app.listen(3000);
+app.listen(5000);
