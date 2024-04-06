@@ -1,6 +1,6 @@
-const express = require('express')
-const SubmissionImageService = require('../services/SubmissionImageService')
-const router = new express.Router()
+const express = require('express');
+const SubmissionImageService = require('../services/SubmissionImageService');
+const router = new express.Router();
 
 const multer = require('multer')
 const upload = multer()

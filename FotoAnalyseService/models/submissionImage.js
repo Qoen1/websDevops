@@ -15,7 +15,7 @@ const submissionImageSchema = new mongoose.Schema({
   },
   score: {
     type: Number,
-    required: true
+    required: false
   }
 });
 

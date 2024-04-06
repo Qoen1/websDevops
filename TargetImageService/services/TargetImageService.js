@@ -20,12 +20,13 @@ class TargetImageService {
           imageType: fileType,
           userId: userId,
           CompetitionId: CompetitionId
-        })
+        });
         newFile.save().then(data => {
           console.log(this.messageService)
-          this.messageService.NotifyTargetImageCreated(data._id, CompetitionId, data.imageBuffer)
-          resolve(data._id)
-        })
+          const base64Image = data.imageBuffer.toString('base64');
+          this.messageService.NotifyTargetImageCreated(data._id, CompetitionId, base64Image);
+          resolve(data._id);
+        });
       // })
     })
   }
@@ -39,10 +40,10 @@ class TargetImageService {
             message: 'no target image exists with id ' + id
           })
         }
-        resolve(result)
-      })
-    })
+        resolve(result);
+      });
+    });
   }
 }
 
-module.exports = TargetImageService
+module.exports = TargetImageService;

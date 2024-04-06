@@ -22,8 +22,9 @@ class SubmissionImageService {
           CompetitionId: CompetitionId
         })
         newFile.save().then(data => {
-          console.log(this.messageService)
-          this.messageService.NotifySubmissionImageCreated(data._id, CompetitionId, data.imageBuffer)
+          console.log(this.messageService);
+          const base64image = data.imageBuffer.toString('base64');
+          this.messageService.NotifySubmissionImageCreated(data._id, CompetitionId, base64image)
           resolve(data._id)
         })
       // })

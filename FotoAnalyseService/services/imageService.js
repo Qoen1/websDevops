@@ -1,22 +1,22 @@
 const TargetImage = require('../models/targetImage');
 const SubmissionImage = require('../models/submissionImage');
+const Producer = require('../messageBus/producer');
 
 class ImageService {
-    saveTargetImage(imageData) {
+    saveTargetImage(imageId, competitionId, imageBase64) {
         const targetImage = new TargetImage({
-        imageId: imageData.imageId,
-        competitionId: imageData.competitionId,
-        imageBase64: imageData.image
+        imageId: imageId,
+        competitionId: competitionId,
+        imageBase64: imageBase64,
         });
         return targetImage.save();
     }
     
-    saveSubmissionImage(imageData, score) {
+    saveSubmissionImage(imageId, competitionId, imageBase64) {
         const submissionImage = new SubmissionImage({
-            imageId: imageData.imageId,
-            competitionId: imageData.competitionId,
-            imageBase64: imageData.image,
-            score: score
+            imageId: imageId,
+            competitionId: competitionId,
+            imageBase64: imageBase64,
         });
         return submissionImage.save();
     }
@@ -31,6 +31,25 @@ class ImageService {
             }
         } catch (error) {
             throw new Error('Error fetching target image:', error);
+        }
+    }
+
+    async addScoreToImage(imageId, score) {
+        try {
+            const submissionImage = await SubmissionImage.findOneAndUpdate(
+                { imageId },
+                { $set: { score } },
+                { new: true }
+            );
+            if (submissionImage) {
+                console.log('Score added to SubmissionImage:', submissionImage.imageId);
+                const producer = new Producer();
+                producer.NotifyScoreAdded(submissionImage.imageId, submissionImage.competitionId, score);
+            } else {
+                throw new Error('Submission image not found for the given imageId');
+            }
+        } catch (error) {
+            console.log('Error adding score to SubmissionImage:', error);
         }
     }
 }

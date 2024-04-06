@@ -22,8 +22,8 @@ class MessageService{
       connection = x
       connection.createChannel().then(y => {
         channel = y
-        channel.assertExchange(exchange, exchangeType, { durable: false })
-        channel.assertQueue(queue, { exclusive: true })
+        channel.assertExchange(exchange, exchangeType, { durable: true })
+        channel.assertQueue(queue, { exclusive: false })
       })
     })
   }
@@ -33,7 +33,7 @@ class MessageService{
         imageId: imageId,
         competitionId: competitionId,
         image: image
-      })))
+      })));
   }
 }
 
