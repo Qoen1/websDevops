@@ -24,19 +24,34 @@
       });
     }
 
-    GetCompetition(id){
-      return new Promise((resolve, reject) => {
-        Competition.findById(id).then(x => {
-          if(x === undefined || x === null){
-            reject({
-              statusCode: 404,
-              message: 'no competition exists with id ' + id
-            })
+    async GetCompetition(id) {
+      try {
+          const competition = await Competition.findOne({ _id: id });
+          
+          if (!competition) {
+              return { status: 404, message: "Competition not found." };
           }
-          resolve(x)
-        })
-      })
+          
+          return { status: 200, competition: competition };
+      } catch (err) {
+          console.error('Error fetching competition:', err);
+          return { status: 500, message: "Internal server error." };
+      }
+  }
+
+  async GetScores(id) {
+    console.log("getscores called on id ", id);
+    try {
+        const submissions = await Submission.find({ competitionId: id });
+        if (!submissions) {
+            return { status: 404, message: "No submissions found for the competition." };
+        }
+        return { status: 200, submissions: submissions };
+    } catch (error) {
+        console.error("Error in GetScores:", error);
+        return { status: 500, message: "Internal server error." };
     }
+  }
 
     async RegisterTargetImage(competitionId, targetImageId) {
       try {
@@ -55,9 +70,6 @@
   }
 
     async RegisterSubmissionImage(imageId, userId, competitionId) {
-      console.log('register called');
-      console.log(imageId);
-      console.log(userId);
       if(userId == false || userId == null || userId == undefined) {
         return { status: 500, message: "User id not provided."}
       }
@@ -75,7 +87,7 @@
           });
           await submission.save();
           console.log('Submission saved successfully');
-      } catch (err) {
+      } catch (err) { 
           console.error('Error saving submission:', err);
           return { status: 500, message: "Internal server error." };
       }

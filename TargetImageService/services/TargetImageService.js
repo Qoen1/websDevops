@@ -22,7 +22,6 @@ class TargetImageService {
           CompetitionId: CompetitionId
         });
         newFile.save().then(data => {
-          console.log(this.messageService)
           const base64Image = data.imageBuffer.toString('base64');
           this.messageService.NotifyTargetImageCreated(data._id, CompetitionId, base64Image);
           resolve(data._id);

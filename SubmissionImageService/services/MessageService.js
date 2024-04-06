@@ -2,7 +2,7 @@ const amqp = require('amqplib')
 const uri = 'amqp://localhost:5672'
 const exchange = 'my_exchange'
 const exchangeType = 'topic'
-const queue = 'targetImageQueue'
+const queue = 'SubmissionImageQueue'
 const routingKeys = {
   competitionAddKey: '#.Competition.#.Add.#',
   targetImageAddKey: '#.TargetImage.#.Add.#',
@@ -31,8 +31,6 @@ class MessageService{
   }
 
   NotifySubmissionImageCreated(imageId, competitionId, userId, image){
-    console.log('sent message with id: ', imageId);
-    console.log(userId);
     channel.publish(exchange, routingKeys.submissionImageAddKey, Buffer.from(JSON.stringify({
       imageId: imageId,
       competitionId: competitionId,
