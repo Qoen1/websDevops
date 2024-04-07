@@ -1,0 +1,57 @@
+name: ESLint Check
+
+on:
+  pull_request:
+    branches:
+      - master
+      - main
+
+jobs:
+  lint:
+    name: Run ESLint in Services
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies and run ESLint in AuthService
+        run: |
+          cd AuthService
+          npm install
+          npx eslint .
+
+      - name: Install dependencies and run ESLint in CompetitionService
+        run: |
+          cd CompetitionService
+          npm install
+          npx eslint .
+
+      - name: Install dependencies and run ESLint in FotoAnalyseService
+        run: |
+          cd FotoAnalyseService
+          npm install
+          npx eslint .
+
+      - name: Install dependencies and run ESLint in SubmissionImageService
+        run: |
+          cd SubmissionImageService
+          npm install
+          npx eslint .
+
+      - name: Install dependencies and run ESLint in TargetImageService
+        run: |
+          cd TargetImageService
+          npm install
+          npx eslint .
+
+      - name: Install dependencies and run ESLint in TargetImageService
+        run: |
+          cd gateway
+          npm install
+          npx eslint .
