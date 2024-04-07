@@ -1,5 +1,4 @@
 const TargetImage = require('../models/TargetImage')
-// const Competition = require('../models/Competition')
 const MessageService = require('./MessageService')
 
 
@@ -8,13 +7,6 @@ class TargetImageService {
 
   SaveImage(file, fileType, userId, CompetitionId){
     return new Promise((resolve, reject) => {
-      // let yesterday = new Date()
-      // yesterday.setDate(yesterday - 1)
-      // Competition.find({id: CompetitionId, createdAt: { $gte: yesterday}}).then(competitions => {
-      //   if(competitions.length !== 1 ){
-      //     reject(competitions.length)
-      //   }
-
         let newFile = new TargetImage({
           imageBuffer: file,
           imageType: fileType,
@@ -26,7 +18,6 @@ class TargetImageService {
           this.messageService.NotifyTargetImageCreated(data._id, CompetitionId, base64Image);
           resolve(data._id);
         });
-      // })
     })
   }
 
