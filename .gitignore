@@ -5,3 +5,4 @@ TargetImageService/.env
 SubmissionImageService/.env
 CompetitionService/.env
 AuthService/.env
+ImageScoreService/.env
