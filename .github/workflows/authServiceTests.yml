@@ -19,11 +19,5 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Change directory to AuthService
-        run: cd AuthService
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run tests
-        run: npm test
+      - name: Run tests in AuthService
+        run: cd AuthService && npm install && npm test
