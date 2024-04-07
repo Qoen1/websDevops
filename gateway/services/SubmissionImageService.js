@@ -8,7 +8,6 @@ class CompetitionService{
                 let response = await axios.get(submissionImageServiceUrl + '/' + id, { responseType: 'arraybuffer' })
                 resolve(response)
             } catch (e) {
-                console.log(e)
                 reject(e)
             }
         })
@@ -17,8 +16,6 @@ class CompetitionService{
     create(image, userId, competitionId){
         return new Promise(async (resolve, reject) => {
             try {
-                console.log(image)
-                // console.log(new Blob(image.buffer))
                 const formData = new FormData();
                 const blob = new Blob([image.buffer], { type: image.mimetype });
                 formData.append('userId', userId)

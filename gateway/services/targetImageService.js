@@ -8,7 +8,6 @@ class TargetImageService{
                 let response = await axios.get(targetimageurl + '/' + id, { responseType: 'arraybuffer' })
                 resolve(response)
             } catch (e) {
-                console.log(e)
                 reject(e)
             }
         })
