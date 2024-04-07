@@ -1,9 +1,10 @@
 name: Run TargetImageService Tests
 
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+      branches:
+          - master
+          - main
 
 jobs:
   test:
