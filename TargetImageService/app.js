@@ -2,7 +2,11 @@ const express = require('express');
 const app = express();
 const mongoose = require("mongoose");
 const promBundle = require('express-prom-bundle');
-const mongoURI = 'mongodb://localhost:27017/TargetImage';
+require('dotenv').config();
+const port = process.env.PORT || 3005;
+const dbUrl = process.env.DB_URL;
+
+mongoose.connect(dbUrl);
 const metrics_middleware = promBundle({
   includePath: true,
   includeStatusCode: true,
