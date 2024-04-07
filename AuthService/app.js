@@ -16,8 +16,8 @@ var jsonParser = bodyParser.json()
 app.use(jsonParser)
 
 //routes
-
-app.use('/auth', authRoutes);
+app.use(require('./middleware/ApiMiddleware'))
+app.use('/auth', authRoutes)
 
 //end routes
 

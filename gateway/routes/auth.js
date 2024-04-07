@@ -76,6 +76,7 @@ const registerBreaker = new CircuitBreaker(authService.register, options);
 router.post('/register', async (req, res) => {
     registerBreaker.fire(req.body.username, req.body.password, req.body.role)
         .catch((e) => {
+            console.error(e)
             res.status(500).json({error: 'Failed to fetch data'});
         }).then(result => {
         res.send(result)
