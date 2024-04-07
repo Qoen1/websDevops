@@ -1,4 +1,4 @@
-name: Run AuthService Tests
+name: Run FotoAnalyseService Tests
 
 on:
   pull_request:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    name: Run Jest tests in AuthService
+    name: Run Jest tests in FotoAnalyseService
     runs-on: ubuntu-latest
 
     steps:
@@ -20,5 +20,5 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Run tests in AuthService
-        run: cd AuthService && npm install && npm test
+      - name: Run tests in FotoAnalyseService
+        run: cd FotoAnalyseService && npm install && npm test
