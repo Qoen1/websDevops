@@ -4,7 +4,7 @@ const ImageAnalyseService = require('../services/imageAnalyseService');
 const exchange = 'my_exchange'
 const queue = 'FotoAnalyseQueue';
 
-const rabbitMQUrl = 'amqp://localhost:5672';
+const rabbitMQUrl = process.env.RABBIT_URL;
 
 amqp.connect(rabbitMQUrl, function (error0, connection) {
   if (error0) {

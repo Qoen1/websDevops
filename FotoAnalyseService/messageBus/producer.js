@@ -1,5 +1,5 @@
 const amqp = require('amqplib');
-const uri = 'amqp://localhost:5672';
+const rabbitMQUrl = process.env.RABBIT_URL;
 const exchange = 'my_exchange';
 const exchangeType = 'topic';
 const routingKeys = {
@@ -15,7 +15,7 @@ class Producer {
   }
 
   init(){
-    amqp.connect(uri, { resubscribe: true }).then( x => {
+    amqp.connect(rabbitMQUrl, { resubscribe: true }).then( x => {
       connection = x
       connection.createChannel().then(y => {
         channel = y
