@@ -1,3 +1,7 @@
 node_modules/
 .idea/
 FotoAnalyseService/.env
+TargetImageService/.env
+SubmissionImageService/.env
+CompetitionService/.env
+AuthService/.env
