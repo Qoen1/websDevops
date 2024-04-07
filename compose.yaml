@@ -23,13 +23,13 @@ services:
     depends_on:
       - mongo-express
       - rabbitmq
-  fotoanalyseservice:
+  imagescoreservice:
     build:
-      context: ./FotoAnalyseService
-    container_name: fotoanalyseservice
-    hostname: "fotoanalyseservice"
+      context: ./ImageScoreService
+    container_name: imagescoreservice
+    hostname: "imagescoreservice"
     labels:
-      NAME: "fotoanalyseservice"
+      NAME: "imagescoreservice"
     ports:
       - 3000:3000
     depends_on:
