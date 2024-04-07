@@ -25,6 +25,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.use(require('./middleware/AuthenticatedMiddleware'))
 //private routes
 app.use('/competitions', jsonParser, require('./routes/competition'))
+app.use('/submissions', require('./routes/submission'))
+app.use('/targets', require('./routes/target'))
 
 //error handler
 app.get('/', function(req, res){

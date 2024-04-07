@@ -34,13 +34,12 @@ const options = {
  */
 const loginBreaker = new CircuitBreaker(authService.login, options);
 router.post('/login', async (req, res) => {
-    try {
-        const result = await loginBreaker.fire(req.body.username, req.body.password)
-        
+    loginBreaker.fire(req.body.username, req.body.password)
+        .catch((e) => {
+            res.status(500).json({error: 'Failed to fetch data'});
+        }).then(result => {
         res.send(result)
-    }catch (_) {
-        res.status(500).json({ error: 'Failed to fetch data' });
-    }
+    })
 })
 
 /**
@@ -75,27 +74,23 @@ router.post('/login', async (req, res) => {
  */
 const registerBreaker = new CircuitBreaker(authService.register, options);
 router.post('/register', async (req, res) => {
-    try {
-        let result = await registerBreaker.fire(req.body.username, req.body.password, req.body.role)
-        
+    registerBreaker.fire(req.body.username, req.body.password, req.body.role)
+        .catch((e) => {
+            res.status(500).json({error: 'Failed to fetch data'});
+        }).then(result => {
         res.send(result)
-    }catch (_) {
-        console.log(_)
-        res.status(500).json({ error: 'Failed to fetch data' });
-    }
+    })
 })
 
-const checkBreaker = new CircuitBreaker(authService.checkToken, options);
+const checkBreaker = new CircuitBreaker((token) => authService.checkToken(token), options);
 router.post('/checkToken', async (req, res) => {
-    try {
-        console.log(req.headers.authorization)
-        let result = await checkBreaker.fire(req.headers.authorization)
-
+    checkBreaker.fire(req.headers.authorization)
+        .catch((e) => {
+            res.status(500).json({error: 'Failed to fetch data'});
+        }).then(result => {
         res.send(result)
-    }catch (_) {
-        console.log(_)
-        res.status(500).json({ error: 'Failed to fetch data' });
-    }
-});
+    })
+})
 
-module.exports = router;
+
+module.exports = router
