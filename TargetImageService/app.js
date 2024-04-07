@@ -3,7 +3,7 @@ const app = express();
 const mongoose = require("mongoose");
 const promBundle = require('express-prom-bundle');
 require('dotenv').config();
-const port = process.env.PORT || 3005;
+const PORT = process.env.PORT || 3005;
 const dbUrl = process.env.DB_URL;
 
 mongoose.connect(dbUrl);
@@ -30,4 +30,4 @@ app.get('/', function(req, res){
 });
 
 
-app.listen(process.env.PORT, () => console.log(`listening on port: ${process.env.PORT}`))
+app.listen(PORT);

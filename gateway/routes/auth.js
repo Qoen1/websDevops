@@ -7,6 +7,31 @@ const options = {
     errorThresholdPercentage: 50
 }
 
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: Authenticate user
+ *     tags:
+ *       - Authentication
+ *     description: Authenticate user with username and password
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       '200':
+ *         description: Successful authentication
+ *       '500':
+ *         description: Internal server error
+ */
 const loginBreaker = new CircuitBreaker(authService.login, options);
 router.post('/login', async (req, res) => {
     loginBreaker.fire(req.body.username, req.body.password)
@@ -17,6 +42,36 @@ router.post('/login', async (req, res) => {
     })
 })
 
+/**
+ * @swagger
+ * tags:
+ *   name: Authentication
+ *   description: User authentication endpoints
+ * /register:
+ *   post:
+ *     summary: Register user
+ *     tags:
+ *       - Authentication
+ *     description: Register user with username, password, and role
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               role:
+ *                 type: string
+ *     responses:
+ *       '200':
+ *         description: User registration successful
+ *       '500':
+ *         description: Internal server error
+ */
 const registerBreaker = new CircuitBreaker(authService.register, options);
 router.post('/register', async (req, res) => {
     registerBreaker.fire(req.body.username, req.body.password, req.body.role)

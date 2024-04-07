@@ -3,9 +3,9 @@ const TargetImage = require('../models/targetImage');
 const SubmissionImage = require('../models/submissionImage');
 const Producer = require('../messageBus/producer');
 
-jest.mock('../models/TargetImage');
-jest.mock('../models/SubmissionImage');
-jest.mock('../messageBus/Producer');
+jest.mock('../models/targetImage');
+jest.mock('../models/submissionImage');
+jest.mock('../messageBus/producer');
 
 describe('ImageService', () => {
     let imageService;
