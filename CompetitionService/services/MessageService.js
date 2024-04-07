@@ -1,5 +1,6 @@
 const amqp = require('amqplib');
-const rabbitMQUrl = 'amqp://localhost:5672';
+require('dotenv').config();
+const rabbitMQUrl = process.env.RABBIT_URL;
 const exchange = 'my_exchange'
 const exchangeType = 'topic'
 const queue = 'CompetitionServiceQueue'

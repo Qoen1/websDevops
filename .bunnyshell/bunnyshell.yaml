@@ -1,0 +1,163 @@
+kind: Environment
+name: preview
+type: primary
+urlHandle: yeetusDeletus
+components:
+  -
+    kind: Application
+    name: authservice
+    gitRepo: 'https://github.com/Qoen1/websDevops.git'
+    gitBranch: main
+    gitApplicationPath: AuthService
+    dockerCompose:
+      build:
+        context: ./AuthService
+        dockerfile: Dockerfile
+      hostname: authservice
+      labels:
+        NAME: authservice
+      ports:
+        - '1000:3000'
+    hosts:
+      -
+        hostname: 'authservice-{{ env.base_domain }}'
+        path: /
+        servicePort: 1000
+  -
+    kind: Application
+    name: competitionservice
+    gitRepo: 'https://github.com/Qoen1/websDevops.git'
+    gitBranch: main
+    gitApplicationPath: CompetitionService
+    dockerCompose:
+      build:
+        context: ./CompetitionService
+        dockerfile: Dockerfile
+      hostname: competitionservice
+      labels:
+        NAME: competitionservice
+      ports:
+        - '2000:3000'
+    hosts:
+      -
+        hostname: 'competitionservice-{{ env.base_domain }}'
+        path: /
+        servicePort: 2000
+  -
+    kind: Application
+    name: gateway
+    gitRepo: 'https://github.com/Qoen1/websDevops.git'
+    gitBranch: main
+    gitApplicationPath: gateway
+    dockerCompose:
+      build:
+        context: ./gateway
+        dockerfile: Dockerfile
+      hostname: gateway
+      labels:
+        NAME: gateway
+      ports:
+        - '4000:3000'
+    hosts:
+      -
+        hostname: 'gateway-{{ env.base_domain }}'
+        path: /
+        servicePort: 4000
+  -
+    kind: Application
+    name: grafana
+    gitRepo: 'https://github.com/Qoen1/websDevops.git'
+    gitBranch: main
+    gitApplicationPath: grafana
+    dockerCompose:
+      build:
+        context: ./grafana
+        dockerfile: Dockerfile
+      ports:
+        - '1234:3000'
+    hosts:
+      -
+        hostname: 'grafana-{{ env.base_domain }}'
+        path: /
+        servicePort: 1234
+  -
+    kind: Database
+    name: mongo-express
+    dockerCompose:
+      hostname: mongo
+      image: mongo
+      labels:
+        NAME: mongo
+      ports:
+        - '6942:27017'
+      restart: always
+  -
+    kind: Service
+    name: prometheus
+    dockerCompose:
+      command:
+        - '--web.enable-lifecycle'
+        - '--config.file=/etc/prometheus/prometheus.yml'
+      image: 'prom/prometheus:latest'
+      ports:
+        - '9090:9090'
+    hosts:
+      -
+        hostname: 'prometheus-{{ env.base_domain }}'
+        path: /
+        servicePort: 9090
+  -
+    kind: Service
+    name: rabbitmq
+    dockerCompose:
+      hostname: rabbitmq
+      image: 'rabbitmq:latest'
+      labels:
+        NAME: rabbitmq
+      ports:
+        - '5672:5672'
+    hosts:
+      -
+        hostname: 'rabbitmq-{{ env.base_domain }}'
+        path: /
+        servicePort: 5672
+  -
+    kind: Application
+    name: submissionimageservice
+    gitRepo: 'https://github.com/Qoen1/websDevops.git'
+    gitBranch: main
+    gitApplicationPath: SubmissionImageService
+    dockerCompose:
+      build:
+        context: ./SubmissionImageService
+        dockerfile: Dockerfile
+      hostname: submissionimageservice
+      labels:
+        NAME: submissionimageservice
+      ports:
+        - '5000:3000'
+    hosts:
+      -
+        hostname: 'submissionimageservice-{{ env.base_domain }}'
+        path: /
+        servicePort: 5000
+  -
+    kind: Application
+    name: targetimageservice
+    gitRepo: 'https://github.com/Qoen1/websDevops.git'
+    gitBranch: main
+    gitApplicationPath: TargetImageService
+    dockerCompose:
+      build:
+        context: ./TargetImageService
+        dockerfile: Dockerfile
+      hostname: targetimageservice
+      labels:
+        NAME: targetimageservice
+      ports:
+        - '6000:6000'
+    hosts:
+      -
+        hostname: 'targetimageservice-{{ env.base_domain }}'
+        path: /
+        servicePort: 6000
