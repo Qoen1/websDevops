@@ -1,0 +1,35 @@
+name: Run Tests
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Run Jest tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Run tests in AuthService
+        run: cd AuthService && npm install && npm test
+
+      - name: Run tests in CompetitionService
+        run: cd CompetitionService && npm install && npm test
+
+      - name: Run tests in FotoAnalyseService
+        run: cd FotoAnalyseService && npm install && npm test
+
+      - name: Run tests in SubmissionImageService
+        run: cd SubmissionImageService && npm install && npm test
+
+      - name: Run tests in TargetImageService
+        run: cd TargetImageService && npm install && npm test
