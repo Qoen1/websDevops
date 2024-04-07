@@ -15,7 +15,7 @@ router.get('/:id', async (req, res) => {
     try {
         const result = await findBreaker.fire(req.params.id)
 
-        res.send(result)
+        res.type(result.headers['content-type']).send(result.data)
     }catch (_) {
         res.status(500).json({ error: 'Failed to fetch data' });
     }

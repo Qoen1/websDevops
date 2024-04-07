@@ -41,4 +41,21 @@ router.post('/check', async (req, res) => {
     })
 })
 
+router.get('/user/:userId/role', async (req, res) => {
+    const authService = new AuthService();
+    try {
+        const userId = req.params.userId;
+        const result = await authService.getUserRole(userId);
+        if (result.status === 200) {
+            res.status(200).json({ role: result.role });
+        } else {
+            res.status(result.status).json({ error: result.message });
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
+
 module.exports = router;

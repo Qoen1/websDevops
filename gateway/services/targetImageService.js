@@ -5,8 +5,8 @@ class TargetImageService{
     find(id) {
         return new Promise(async (resolve, reject) => {
             try {
-                let response = await axios.get(targetimageurl + '/' + id)
-                resolve(response.data)
+                let response = await axios.get(targetimageurl + '/' + id, { responseType: 'arraybuffer' })
+                resolve(response)
             } catch (e) {
                 reject(e)
             }
@@ -16,10 +16,17 @@ class TargetImageService{
     create(image, userId, competitionId){
         return new Promise(async (resolve, reject) => {
             try {
-                let response = await axios.post(targetimageurl, {
-                    image: image,
-                    userId: userId,
-                    competitionId: competitionId
+                console.log(image)
+                // console.log(new Blob(image.buffer))
+                const formData = new FormData();
+                const blob = new Blob([image.buffer], { type: image.mimetype });
+                formData.append('userId', userId)
+                formData.append('competitionId', competitionId)
+                formData.append('image', blob,  image.name);
+                let response = await axios.post(targetimageurl, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    },
                 })
                 resolve(response.data)
             } catch (e) {

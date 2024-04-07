@@ -7,26 +7,27 @@ const options = {
     errorThresholdPercentage: 50
 }
 
+const multer = require('multer')
+const upload = multer()
+
 const findBreaker = new CircuitBreaker(submissionImageService.find, options);
 router.get('/:id', async (req, res) => {
-    try {
-        const result = await findBreaker.fire(req.params.id)
-
-        res.send(result)
-    }catch (_) {
-        res.status(500).json({ error: 'Failed to fetch data' });
-    }
+    findBreaker.fire(req.params.id)
+        .then(response => {
+            res.type(response.headers['content-type']).send(response.data)
+        }).catch(e => {
+        res.status(500).json({error: 'Failed to fetch data'});
+    })
 })
 
 const postBreaker = new CircuitBreaker(submissionImageService.create, options);
-router.post('/', async (request, response) => {
-    try {
-        const result = await postBreaker.fire(request.body.userId, request.body.title)
-
-        response.send(result)
-    }catch (_) {
-        response.status(500).json({ error: 'Failed to fetch data' });
-    }
+router.post('/', upload.single('image'), async (request, response) => {
+    postBreaker.fire(request.file, request.body.userId, request.body.competitionId)
+        .then(result => {
+            response.send(result)
+        }).catch(e => {
+        response.status(500).json({error: 'Failed to fetch data'});
+    })
 })
 
 
