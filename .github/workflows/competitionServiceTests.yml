@@ -1,0 +1,29 @@
+name: Run CompetitionService Tests
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Run Jest tests in CompetitionService
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Change directory to CompetitionService
+        run: cd CompetitionService
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
