@@ -6,6 +6,6 @@
 
 [![FotoAnalyseService tests](https://github.com/Qoen1/websDevops/actions/workflows/fotoAnalyseServiceTests.yml/badge.svg)](https://github.com/Qoen1/websDevops/actions/workflows/fotoAnalyseServiceTests.yml)
 
-[![SubmissionImageService tests](https://github.com/Qoen1/websDevops/actions/workflows/submissionImageService.yml/badge.svg)](https://github.com/Qoen1/websDevops/actions/workflows/submissionImageService.yml)
+[![SubmissionImageService tests](https://github.com/Qoen1/websDevops/actions/workflows/submissionImageServiceTests.yml/badge.svg)](https://github.com/Qoen1/websDevops/actions/workflows/submissionImageServiceTests.yml)
 
-[![TargetImageService tests](https://github.com/Qoen1/websDevops/actions/workflows/targetImageService.yml/badge.svg)](https://github.com/Qoen1/websDevops/actions/workflows/targetImageService.yml)
+[![TargetImageService tests](https://github.com/Qoen1/websDevops/actions/workflows/targetImageServiceTests.yml/badge.svg)](https://github.com/Qoen1/websDevops/actions/workflows/targetImageServiceTests.yml)
