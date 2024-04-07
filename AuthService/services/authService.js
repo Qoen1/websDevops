@@ -31,6 +31,18 @@ class AuthService {
             throw new Error(error.message);
         }
     }
+
+    async getUserRole(userId) {
+        try {
+            const user = await User.findById(userId);
+            if (!user) {
+                return { status: 404, message: 'User not found' };
+            }
+            return { status: 200, role: user.role };
+        } catch (error) {
+            return { status: 500, message: `Error fetching user role: ${error.message}` };
+        }
+    }
 }
 
 module.exports = AuthService;

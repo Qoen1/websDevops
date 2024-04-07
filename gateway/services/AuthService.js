@@ -43,6 +43,18 @@ class AuthService{
             }
         })
     }
+
+    getUserRole(userId) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const response = await axios.get(`${authServiceUrl}/auth/user/${userId}/role`);
+                resolve(response.data)
+            }
+            catch (e) {
+                reject(e);
+            }
+        })
+    }
 }
 
 module.exports = new AuthService()
