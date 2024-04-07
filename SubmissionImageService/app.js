@@ -2,7 +2,11 @@ const express = require('express')
 const app = express()
 const mongoose = require("mongoose")
 const promBundle = require('express-prom-bundle');
-const mongoURI = 'mongodb://localhost:27017/SubmissionImage';
+require('dotenv').config();
+const port = process.env.PORT || 3004;
+const dbUrl = process.env.DB_URL;
+
+mongoose.connect(dbUrl);
 
 const metrics_middleware = promBundle({
   includePath: true,
@@ -12,8 +16,6 @@ const metrics_middleware = promBundle({
     collectDefaultMetrics: {}
   }
 })
-
-mongoose.connect(mongoURI);
 
 //middleware
 app.use(metrics_middleware)
@@ -29,4 +31,4 @@ app.get('/', function(req, res){
 });
 
 
-app.listen(3000);
+app.listen(port);

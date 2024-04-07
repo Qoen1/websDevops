@@ -3,13 +3,11 @@ const bodyParser = require('body-parser');
 const mongoose = require("mongoose");
 require('./messageBus/consumer');
 const app = express();
-const mongoURI = 'mongodb://localhost:27017/FotoAnalyse';
-
 require('dotenv').config();
+const port = process.env.PORT || 3003;
+const dbUrl = process.env.DB_URL;
 
-
-const PORT = process.env.PORT || 3002;
-mongoose.connect(mongoURI);
+mongoose.connect(dbUrl);
 
 
 

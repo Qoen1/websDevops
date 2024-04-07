@@ -3,8 +3,11 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const app = express()
 const promBundle = require('express-prom-bundle')
-const mongoURI = 'mongodb://localhost:27017/Competition';
+require('dotenv').config();
+const PORT = process.env.PORT || 3002;
+const dbUrl = process.env.DB_URL;
 
+mongoose.connect(dbUrl);
 const metrics_middleware = promBundle({
   includePath: true,
   includeStatusCode: true,
@@ -14,9 +17,8 @@ const metrics_middleware = promBundle({
   }
 })
 
-const jsonParser = bodyParser.json()
-app.use(metrics_middleware)
-mongoose.connect(mongoURI);
+const jsonParser = bodyParser.json();
+app.use(metrics_middleware);
 
 //routes
 app.use('/', jsonParser, require('./routes/routes'));
@@ -32,4 +34,4 @@ app.use((err, req, res, next) => {
 });
 
 
-app.listen(3005);
+app.listen(PORT);
