@@ -5,7 +5,10 @@ class TargetImageService{
     find(id) {
         return new Promise(async (resolve, reject) => {
             try {
-                let response = await axios.get(targetimageurl + '/' + id, { responseType: 'arraybuffer' })
+                let response = await axios.get(targetimageurl + '/' + id, { responseType: 'arraybuffer' },
+                {
+                    headers: {ApiKey: process.env.TOKEN}
+                })
                 resolve(response)
             } catch (e) {
                 reject(e)
@@ -25,7 +28,8 @@ class TargetImageService{
                 formData.append('image', blob,  image.name);
                 let response = await axios.post(targetimageurl, formData, {
                     headers: {
-                        'Content-Type': 'multipart/form-data'
+                        'Content-Type': 'multipart/form-data',
+                         ApiKey: process.env.TOKEN
                     },
                 })
                 resolve(response.data)

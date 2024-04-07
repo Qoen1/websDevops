@@ -21,6 +21,7 @@ const jsonParser = bodyParser.json();
 app.use(metrics_middleware);
 
 //routes
+app.use(require('./middleware/ApiMiddleware'))
 app.use('/', jsonParser, require('./routes/routes'));
 
 

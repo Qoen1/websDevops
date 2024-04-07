@@ -8,6 +8,9 @@ class AuthService{
                 let response = await axios.post(authServiceUrl + "/auth/login", {
                     username: username,
                     password: password
+                },
+                {
+                    headers: {ApiKey: process.env.TOKEN}
                 })
                 resolve(response.data)
             }catch (e){
@@ -23,6 +26,9 @@ class AuthService{
                     username: username,
                     password: password,
                     role: role
+                },
+                {
+                    headers: {ApiKey: process.env.TOKEN}
                 })
                 resolve(response.data)
             }catch (e){
@@ -35,7 +41,7 @@ class AuthService{
         return new Promise(async (resolve,reject) => {
             try {
                 let response = await axios.post(authServiceUrl + "/auth/check", {},{
-                    headers: {Authorization: token}
+                    headers: {Authorization: token, ApiKey: process.env.TOKEN}
                 })
                 resolve(response.data.authenticated)
             }catch (e){
@@ -47,7 +53,9 @@ class AuthService{
     getUserRole(userId) {
         return new Promise(async (resolve, reject) => {
             try {
-                const response = await axios.get(`${authServiceUrl}/auth/user/${userId}/role`);
+                const response = await axios.get(`${authServiceUrl}/auth/user/${userId}/role`, {},{
+                    headers: {ApiKey: process.env.TOKEN}
+                })
                 resolve(response.data)
             }
             catch (e) {

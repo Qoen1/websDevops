@@ -20,6 +20,7 @@ const metrics_middleware = promBundle({
 app.use(metrics_middleware)
 
 //routes
+app.use(require('./middleware/ApiMiddleware'))
 app.use('/', require('./routes/routes'));
 
 //end routes
