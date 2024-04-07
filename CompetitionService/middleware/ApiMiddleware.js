@@ -6,9 +6,7 @@ function authenticateAPIToken(req, res, next) {
     if(apikey != process.env.GATEWAY_TOKEN) {
         return res.status(401).json({error: 'Unauthorized - Invalid API key'})
     }
-    else{
-        console.log('yippie!')
-    }
+
     next()
 }
 
