@@ -1,10 +1,11 @@
 ﻿const axios = require('axios')
-
+require('dotenv').config();
+const authServiceUrl = process.env.AUTH_SERVICE_URL
 class AuthService{
     login(username, password){
         return new Promise(async (resolve,reject) => {
             try {
-                let response = await axios.post("http://localhost:3001/auth/login", {
+                let response = await axios.post(authServiceUrl + "/auth/login", {
                     username: username,
                     password: password
                 })
@@ -18,7 +19,7 @@ class AuthService{
     register(username, password, role){
         return new Promise(async (resolve,reject) => {
             try {
-                let response = await axios.post("http://localhost:3001/auth/register", {
+                let response = await axios.post(authServiceUrl + "/auth/register", {
                     username: username,
                     password: password,
                     role: role
@@ -33,7 +34,7 @@ class AuthService{
     checkToken(token){
         return new Promise(async (resolve,reject) => {
             try {
-                let response = await axios.post("http://localhost:3001/auth/check", {},{
+                let response = await axios.post(authServiceUrl + "/auth/check", {},{
                     headers: {Authorization: token}
                 })
                 resolve(response.data.authenticated)
