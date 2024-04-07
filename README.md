@@ -11,3 +11,6 @@
 [![SubmissionImageService tests](https://github.com/Qoen1/websDevops/actions/workflows/submissionImageServiceTests.yml/badge.svg)](https://github.com/Qoen1/websDevops/actions/workflows/submissionImageServiceTests.yml)
 
 [![TargetImageService tests](https://github.com/Qoen1/websDevops/actions/workflows/targetImageServiceTests.yml/badge.svg)](https://github.com/Qoen1/websDevops/actions/workflows/targetImageServiceTests.yml)
+
+[![ESLint Check](https://github.com/Qoen1/websDevops/actions/workflows/eslintCheck.yaml/badge.svg)](https://github.com/Qoen1/websDevops/actions/workflows/eslintCheck.yaml)
+
