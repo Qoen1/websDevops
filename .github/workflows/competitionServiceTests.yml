@@ -19,11 +19,5 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Change directory to CompetitionService
-        run: cd CompetitionService
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run tests
-        run: npm test
+      - name: Run tests in CompetitionService
+        run: cd CompetitionService && npm install && npm test
