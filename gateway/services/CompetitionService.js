@@ -7,7 +7,7 @@ class CompetitionService{
     find(id) {
         return new Promise(async (resolve, reject) => {
             try {
-                let response = await axios.get(competitionServiceUrl + '/' + id, {}, {
+                let response = await axios.get(competitionServiceUrl + '/' + id, {
                     headers: {ApiKey: process.env.TOKEN}
                 })
                 resolve(response.data)
@@ -20,7 +20,7 @@ class CompetitionService{
     getScores(competitionId) {
         return new Promise(async (resolve, reject) => {
             try {
-                let response = await axios.get(competitionServiceUrl + '/' + competitionId + '/scores', {}, {
+                let response = await axios.get(competitionServiceUrl + '/' + competitionId + '/scores', {
                     headers: {ApiKey: process.env.TOKEN}
                 })
                 resolve(response.data)

@@ -53,12 +53,13 @@ class AuthService{
     getUserRole(userId) {
         return new Promise(async (resolve, reject) => {
             try {
-                const response = await axios.get(`${authServiceUrl}/auth/user/${userId}/role`, {},{
-                    headers: {ApiKey: process.env.TOKEN}
+                const response = await axios.get(`${authServiceUrl}/auth/user/${userId}/role`, {
+                    headers: {apikey: process.env.TOKEN}
                 })
                 resolve(response.data)
             }
             catch (e) {
+                console.log(process.env.TOKEN)
                 reject(e);
             }
         })

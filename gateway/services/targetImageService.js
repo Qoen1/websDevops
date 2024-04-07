@@ -5,9 +5,10 @@ class TargetImageService{
     find(id) {
         return new Promise(async (resolve, reject) => {
             try {
-                let response = await axios.get(targetimageurl + '/' + id, { responseType: 'arraybuffer' },
+                let response = await axios.get(targetimageurl + '/' + id,
                 {
-                    headers: {ApiKey: process.env.TOKEN}
+                    headers: {ApiKey: process.env.TOKEN},
+                    responseType: 'arraybuffer'
                 })
                 resolve(response)
             } catch (e) {
