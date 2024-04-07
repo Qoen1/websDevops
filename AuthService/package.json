@@ -18,5 +18,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.2.3",
     "save-dev": "^0.0.1-security"
+  },
+  "devDependencies": {
+    "eslint": "^9.0.0"
   }
 }
