@@ -21,8 +21,6 @@ app.use(metrics_middleware)
 app.use('/', jsonParser, require('./routes/auth'));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
-const loggedInRoutes = ['/competitions', '/submissions', 'targets']
-
 //auth middleware
 app.use('/competitions', require('./middleware/AuthenticatedMiddleware'))
 app.use('/submissions', require('./middleware/AuthenticatedMiddleware'))
