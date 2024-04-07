@@ -1,6 +1,7 @@
-const express = require('express');
+const express = require('express')
 var bodyParser = require('body-parser')
 const app = express();
+const jsonParser = bodyParser.json()
 const promBundle = require('express-prom-bundle')
 const metrics_middleware = promBundle({
   includePath: true,
@@ -10,15 +11,16 @@ const metrics_middleware = promBundle({
     collectDefaultMetrics: {}
   }
 })
-// mongoose.connect('mongodb://localhost:27017/expressJSTest',{ useNewUrlParser: true });
+
 app.use(metrics_middleware)
-var jsonParser = bodyParser.json()
 
-//routes
+//public routes
+app.use('/', jsonParser, require('./routes/auth'))
 
-// app.use('/rooms/:id/lines', jsonParser, require('./routes/Lines'));
-
-//end routes
+//auth middleware
+app.use(require('./middleware/AuthenticatedMiddleware'))
+//private routes
+app.use('/competitions', jsonParser, require('./routes/competition'))
 
 //error handler
 app.get('/', function(req, res){

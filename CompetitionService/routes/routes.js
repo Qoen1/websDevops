@@ -6,7 +6,7 @@ const CompetitionService = require('../services/CompetitionService')
 const messageService = new MessageService();
 const competitionService = messageService.competitionService;
 
-router.get('/:id', async (request, response, next) => {
+router.get('/:id/scores', async (request, response, next) => {
   const competitionId = request.params.id;
   try {
     const result = await competitionService.GetScores(competitionId);
@@ -21,9 +21,20 @@ router.get('/:id', async (request, response, next) => {
   }
 });
 
+router.get('/:id', (request, result, next)=>{
+
+  competitionService.GetCompetition(request.params.id).then(competition => {
+    result.send(competition)
+  }).catch(error => {
+    result.status(error.statusCode)
+    result.send(error.message)
+  })
+})
+
 router.post('/', (request, result, next)=>{
   const userId = request.body.userId
   const title = request.body.title
+  console.log(title)
 
   competitionService.SaveCompetition(userId, title).then(x => {
     result.send(x)
