@@ -91,6 +91,13 @@ services:
       - ./prometheus:/etc/prometheus
     ports:
       - 9090:9090
+    depends_on:
+      - targetimageservice
+      - submissionimageservice
+      - gateway
+      - fotoanalyseservice
+      - competitionservice
+      - authservice
     command: --web.enable-lifecycle --config.file=/etc/prometheus/prometheus.yml
   grafana:
     build: ./grafana
