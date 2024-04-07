@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 require('./messageBus/consumer');
 const app = express();
 require('dotenv').config();
-const port = process.env.PORT || 3003;
+const PORT = process.env.PORT || 3003;
 const dbUrl = process.env.DB_URL;
 
 mongoose.connect(dbUrl);

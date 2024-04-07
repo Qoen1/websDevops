@@ -3,7 +3,7 @@ const app = express();
 const mongoose = require("mongoose");
 const promBundle = require('express-prom-bundle');
 require('dotenv').config();
-const port = process.env.PORT || 3005;
+const PORT = process.env.PORT || 3005;
 const dbUrl = process.env.DB_URL;
 
 mongoose.connect(dbUrl);
@@ -16,7 +16,7 @@ const metrics_middleware = promBundle({
   }
 })
 
-mongoose.connect(mongoURI);
+mongoose.connect(dbUrl);
 
 //middleware
 app.use(metrics_middleware)
@@ -32,4 +32,4 @@ app.get('/', function(req, res){
 });
 
 
-app.listen(6000);
+app.listen(PORT);
