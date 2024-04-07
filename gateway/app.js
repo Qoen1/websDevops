@@ -21,6 +21,8 @@ app.use('/', jsonParser, require('./routes/auth'))
 app.use(require('./middleware/AuthenticatedMiddleware'))
 //private routes
 app.use('/competitions', jsonParser, require('./routes/competition'))
+app.use('/submissions', require('./routes/submission'))
+app.use('/targets', require('./routes/target'))
 
 //error handler
 app.get('/', function(req, res){

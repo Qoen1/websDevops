@@ -16,8 +16,6 @@ const metrics_middleware = promBundle({
   }
 })
 
-mongoose.connect(mongoURI);
-
 //middleware
 app.use(metrics_middleware)
 
