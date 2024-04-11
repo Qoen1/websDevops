@@ -17,6 +17,7 @@ router.get('/:id', (request, result, next)=>{
 router.post('/', upload.single('image'), (request, result, next)=>{
   submissionImageService.SaveImage(request.file.buffer, request.file.mimetype, request.body.userId, request.body.competitionId).then(value => {
     result.send({imageId: value })
+  }).catch(e =>{
   })
 })
 
